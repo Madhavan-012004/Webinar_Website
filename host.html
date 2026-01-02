@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Host | Zest Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div> Zest<span>Hub</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="webinars.html">Webinars</a></li>
+            <li><a href="host.html" class="active">Host</a></li>
+            <li><a href="certificate.html">Certificate</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button id="navLoginBtn" class="btn btn-primary" onclick="openAuthModal('login')">
+    <i class="fa-solid fa-user"></i> Login
+</button>
+    </nav> 
+
+    <div class="page-container">
+        <h1 class="title">Share Your <span class="grad-text">Knowledge</span></h1>
+        
+        <div class="glass-box" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 50px;">
+            <div style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;">
+                <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <h2 style="margin-bottom: 15px;">Ready to Host a Session?</h2>
+            <p style="color: var(--text-gray); margin-bottom: 30px;">
+                Join our community of speakers. Click the button below to submit your proposal.<br>
+                <small style="color: var(--warning);">(Admin will review and add the meeting link upon approval)</small>
+            </p>
+            
+            <button class="btn btn-primary" style="margin: 0 auto; padding: 15px 40px; font-size: 1.1rem;" onclick="openHostModal()">
+                <i class="fa-solid fa-folder-open"></i> Open Submission Box
+            </button>
+        </div>
+
+        <div class="glass-box requirements-section">
+            <h3 style="color: var(--warning); margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-crown"></i> What We Look For
+            </h3>
+            <div class="req-grid">
+                <div class="req-item">
+                    <div class="req-icon"><i class="fa-solid fa-code"></i></div>
+                    <div><h4>Technical Depth</h4><p>Real-world examples.</p></div>
+                </div>
+                <div class="req-item">
+                    <div class="req-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div><h4>Live Demo</h4><p>Hands-on coding.</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hostModal" class="modal">
+        <div class="modal-content" style="max-width: 600px; text-align: left; border: 1px solid var(--primary);">
+            <h2 style="margin-bottom: 20px; text-align: center;">Submit Webinar Proposal</h2>
+            
+            <form id="hostForm">
+                <label style="color: var(--text-gray); font-size: 0.9rem;">Webinar Title</label>
+                <input type="text" id="w_title" placeholder="Ex: Mastering ReactJS" required style="width: 100%; margin-bottom: 15px;">
+
+                <label style="color: var(--text-gray); font-size: 0.9rem;">Speaker Name</label>
+                <input type="text" id="w_speaker" placeholder="Your Name" required style="width: 100%; margin-bottom: 15px;">
+
+                <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                    <div style="flex: 1;">
+                        <label style="color: var(--text-gray); font-size: 0.9rem;">Date</label>
+                        <input type="date" id="w_date" required style="width: 100%;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="color: var(--text-gray); font-size: 0.9rem;">Type</label>
+                        <select id="w_type" style="background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; width: 100%; padding: 12px;">
+                            <option value="Free">Free</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    Submit for Approval
+                </button>
+            </form>
+
+            <p onclick="closeHostModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Close</p>
+        </div>
+    </div>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary);">
+            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <button id="tab-login" class="btn btn-outline" style="border:none; color: white;" onclick="switchTab('login')">Login</button>
+                <button id="tab-signup" class="btn btn-outline" style="border:none; color: var(--text-gray);" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            <form id="loginForm" style="display: block;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Login</h2>
+                <input type="text" id="l_email" placeholder="Email" required>
+                <input type="password" id="l_pass" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+            </form>
+            <form id="signupForm" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Create Account</h2>
+                <input type="text" id="s_name" placeholder="Full Name" required>
+                <input type="email" id="s_email" placeholder="Email" required>
+                <select id="s_role" onchange="toggleCollegeField()" style="background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; width: 100%; padding: 12px; margin-bottom: 15px;">
+                    <option value="Student">Student</option>
+                    <option value="Professional">Professional</option>
+                </select>
+                <div id="collegeField"><input type="text" id="s_college" placeholder="School / College Name" required></div>
+                <input type="password" id="s_pass" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Sign Up</button>
+            </form>
+            <p onclick="closeAuthModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Close</p>
+        </div>
+    </div>
+    
+    <div id="regModal" class="modal">
+        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary);">
+            <h2 style="text-align: center; margin-bottom: 10px;">Confirm Registration</h2>
+            <p id="regTopic" style="text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 600;"></p>
+            
+            <form id="regForm">
+                <label style="color: var(--text-gray); font-size: 0.85rem;">Full Name</label>
+                <input type="text" id="r_name" placeholder="Name" required>
+                
+                <label style="color: var(--text-gray); font-size: 0.85rem;">Email Address</label>
+                <input type="email" id="r_email" placeholder="Email" required>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">Confirm & Register</button>
+            </form>
+
+            <p onclick="closeRegModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Cancel</p>
+        </div>
+    </div>
+    <footer>
+        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px;">&copy; 2026 Zest Hub Premium.</div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

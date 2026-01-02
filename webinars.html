@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Webinars | Zest Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div> Zest<span>Hub</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="webinars.html" class="active">Webinars</a></li>
+            <li><a href="host.html">Host</a></li>
+            <li><a href="certificate.html">Certificate</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button id="navLoginBtn" class="btn btn-primary" onclick="openAuthModal('login')"><i class="fa-solid fa-user"></i> Login</button>
+    </nav>
+
+    <div class="page-container">
+        
+        <div class="glass-box" style="text-align: center; margin-bottom: 50px; border: 1px solid var(--primary);">
+            <h2 class="grad-text">Host Your Own Session</h2>
+            <p class="subtitle" style="margin-bottom: 20px;">Share your knowledge with thousands of students.</p>
+            <button class="btn btn-primary" style="margin: 0 auto;" onclick="openHostModal()">
+                <i class="fa-solid fa-plus"></i> Create Webinar
+            </button>
+        </div>
+
+        <div style="text-align: left; margin-bottom: 20px;">
+            <h3 style="color: #ef4444; display: flex; align-items: center; gap: 10px;">
+                <span style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #ef4444;"></span> 
+                Live Now
+            </h3>
+        </div>
+        <div class="grid-3" style="margin-top: 10px; margin-bottom: 50px;">
+            <div class="glass-box" style="text-align: center; padding: 40px; grid-column: 1 / -1;">
+                <p style="color: var(--text-gray);">No live sessions at the moment.</p>
+            </div>
+        </div>
+
+        <div style="text-align: left; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <h3 style="color: var(--primary);">Upcoming Sessions</h3>
+            <div class="tabs-container" style="margin-bottom: 0;">
+                <button class="tab-btn active" onclick="filterWebinars('all', this)">All</button>
+                <button class="tab-btn" onclick="filterWebinars('free', this)">Free</button>
+                <button class="tab-btn" onclick="filterWebinars('paid', this)">Paid</button>
+            </div>
+
+            
+        </div>
+
+        <div id="dynamicWebinars" class="grid-3" style="margin-top: 10px; margin-bottom: 50px;">
+            <p style="color: var(--text-gray); text-align: center; grid-column: 1/-1;">Loading...</p>
+        </div>
+
+        <div style="text-align: left; margin-bottom: 20px;">
+            <h3 style="color: var(--text-gray);">Past Recordings</h3>
+        </div>
+        <div class="grid-3" style="margin-top: 10px;">
+             <div class="glass-box" style="text-align: left; opacity: 0.7;">
+                <span style="background: rgba(255, 255, 255, 0.1); color: var(--text-gray); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;">Ended</span>
+                <h3 style="margin: 15px 0; color: var(--text-gray);">Intro to AI/ML</h3>
+                <button class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 20px;">Watch Recording</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary); width: 400px;">
+            <div style="display: flex; gap: 0; margin-bottom: 25px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 5px;">
+                <button id="tab-login" onclick="switchTab('login')" style="flex: 1; padding: 10px; border: none; background: var(--primary); color: #000; border-radius: 6px; font-weight: 600; cursor: pointer;">Login</button>
+                <button id="tab-signup" onclick="switchTab('signup')" style="flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-gray); border-radius: 6px; font-weight: 600; cursor: pointer;">Sign Up</button>
+            </div>
+            <form id="loginForm" style="display: block;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Welcome Back!</h2>
+                <input type="text" id="l_email" placeholder="Email" required style="width: 100%; margin-bottom: 10px;">
+                <input type="password" id="l_pass" placeholder="Password" required style="width: 100%; margin-bottom: 15px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login Now</button>
+            </form>
+            <form id="signupForm" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 20px;">Create Account</h2>
+                <input type="text" id="s_name" placeholder="Full Name" required style="width: 100%; margin-bottom: 10px;">
+                <input type="email" id="s_email" placeholder="Email" required style="width: 100%; margin-bottom: 10px;">
+                <select id="s_role" onchange="toggleCollegeField()" style="background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; width: 100%; padding: 12px; margin-bottom: 10px;">
+                    <option value="Student">Student</option>
+                    <option value="Professional">Professional</option>
+                </select>
+                <div id="collegeField"><input type="text" id="s_college" placeholder="School Name" required style="width: 100%; margin-bottom: 10px;"></div>
+                <input type="password" id="s_pass" placeholder="Password" required style="width: 100%; margin-bottom: 15px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+            </form>
+            <p onclick="closeAuthModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Close</p>
+        </div>
+    </div>
+
+    <div id="hostModal" class="modal">
+        <div class="modal-content" style="max-width: 600px; text-align: left; border: 1px solid var(--primary);">
+            <h2 style="margin-bottom: 20px; text-align: center;">Submit Proposal</h2>
+            <form id="hostForm">
+                <input type="text" id="w_title" placeholder="Title" required style="width: 100%; margin-bottom: 10px;">
+                <input type="text" id="w_speaker" placeholder="Speaker" required style="width: 100%; margin-bottom: 10px;">
+                <div style="display: flex; gap: 20px;">
+                    <input type="date" id="w_date" required style="flex: 1;">
+                    <input type="time" id="w_time" required style="flex: 1;">
+                    <select id="w_type" style="flex: 1; background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 14px;">
+                        <option value="Free">Free</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Submit</button>
+            </form>
+            <p onclick="closeHostModal()" style="margin-top: 20px; cursor: pointer; text-align: center;">Close</p>
+        </div>
+    </div>
+
+    <div id="regModal" class="modal">
+        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary);">
+            <h2 style="text-align: center; margin-bottom: 10px;">Confirm Registration</h2>
+            <p id="regTopic" style="text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 600;"></p>
+            <form id="regForm">
+                <input type="text" id="r_name" placeholder="Name" required style="width: 100%; margin-bottom: 10px;">
+                <input type="email" id="r_email" placeholder="Email" required style="width: 100%; margin-bottom: 15px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm</button>
+            </form>
+            <p onclick="closeRegModal()" style="margin-top: 20px; cursor: pointer; text-align: center;">Cancel</p>
+        </div>
+    </div>
+
+    <footer>
+        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px;">&copy; 2026 Zest Hub Premium.</div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

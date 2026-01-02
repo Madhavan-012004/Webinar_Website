@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate | Zest Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div> Zest<span>Hub</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="webinars.html">Webinars</a></li>
+            <li><a href="host.html">Host</a></li>
+            <li><a href="certificate.html" class="active">Certificate</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <button id="navLoginBtn" class="btn btn-primary" onclick="openAuthModal('login')">
+    <i class="fa-solid fa-user"></i> Login
+</button>
+    </nav>
+
+    <div class="page-container">
+        <div style="width: 60px; height: 60px; background: rgba(245, 158, 11, 0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: var(--warning); font-size: 2rem;">
+            <i class="fa-solid fa-award"></i>
+        </div>
+        <h1 class="title">Verify <span class="grad-text">Certificate</span></h1>
+        
+        <div class="info-box" style="max-width: 800px; margin: 0 auto 40px; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+            <h4 style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Disclaimer</h4>
+            <p style="color: var(--text-gray); font-size: 0.95rem;">This certificate is a proof of participation for student-led initiatives. It is not affiliated with any government or official university body.</p>
+        </div>
+
+        <div class="glass-box" style="max-width: 800px; margin: 0 auto; padding: 10px;">
+            <img src="https://marketplace.canva.com/EAFNlUJs5g4/2/0/1600w/canva-white-gold-elegant-modern-certificate-of-participation-UbeIIpE9rJ8.jpg" style="width: 100%; border-radius: 10px; opacity: 0.9;">
+        </div>
+    </div>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="index.html" class="logo" style="margin-bottom: 15px;">
+                    <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
+                    Zest<span>Hub</span>
+                </a>
+                <p style="color: var(--text-gray); line-height: 1.6; max-width: 300px;">
+                    The most advanced student learning platform. Built for students, by students.
+                </p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <a href="webinars.html">Browse Webinars</a>
+                <a href="host.html">Host a Session</a>
+                <a href="certificate.html">Verify Certificate</a>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Support</a>
+            </div>
+        </div>
+        
+        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; font-size: 0.9rem;">
+            &copy; 2026 Zest Hub Premium. All rights reserved.
+        </div>
+    </footer>   
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2><input type="text" placeholder="Email"><input type="password" placeholder="Password"><button class="btn btn-primary" style="width:100%">Login</button><p onclick="closeModal()" style="margin-top:10px; cursor:pointer">Close</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
