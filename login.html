@@ -1,119 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login / Signup | Zest Hub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
-<body class="auth-body">
+
+<body>
+
+    <!-- Back to Home Button -->
+    <a href="index.html" class="btn btn-outline"
+        style="position: fixed; top: 30px; left: 30px; z-index: 100; border-color: rgba(255,255,255,0.2); color: white; background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);">
+        <i class="fas fa-arrow-left"></i> Home
+    </a>
 
     <div class="auth-container">
-        <div class="auth-left">
-            <div class="auth-glass">
-                <h2>Welcome to <br> <span class="grad-text">Zest Hub</span></h2>
-                <p>Join the elite student community.</p>
+        <div class="auth-box">
+            <!-- Left Side: Forms -->
+            <div class="auth-form-side">
+                <div class="auth-header">
+                    <a href="index.html" class="brand-logo" style="display:block; margin-bottom: 20px;">
+                        <i class="fas fa-bolt"></i> Nex<span>Stream</span>
+                    </a>
+
+                    <!-- Login Header -->
+                    <div id="login-header">
+                        <h2>Welcome Back</h2>
+                        <p>Login to continue learning or hosting.</p>
+                    </div>
+
+                    <!-- Signup Header -->
+                    <div id="signup-header" class="hidden">
+                        <h2>Create Account</h2>
+                        <p>Join the future of interactive learning.</p>
+                    </div>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <div id="login-section">
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="l_user" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="l_pass" placeholder="Password" required>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:0.9rem;">
+                            <label style="color:var(--text-muted);"><input type="checkbox"> Remember me</label>
+                            <a href="#" id="forgotLink" style="color:var(--secondary);">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary auth-btn">Log In</button>
+                    </form>
+
+                    <div class="divider"
+                        style="margin: 30px 0; position: relative; text-align: center; border-bottom: 1px solid var(--border);">
+                        <span
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-card); padding: 0 15px; color: var(--text-muted); font-size: 0.85rem;">OR</span>
+                    </div>
+
+                    <div class="social-auth" style="display: flex; flex-direction: column; gap: 12px;">
+                        <button type="button" class="btn btn-outline google-btn" onclick="handleSocialLogin('google')"
+                            style="width: 100%; border-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"
+                                height="18"> Continue with Google
+                        </button>
+                        <button type="button" class="btn btn-outline github-btn" onclick="handleSocialLogin('github')"
+                            style="width: 100%; border-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fab fa-github" style="font-size: 1.2rem;"></i> Continue with GitHub
+                        </button>
+                    </div>
+
+                    <p style="margin-top:20px; text-align:center; color:#94a3b8;">
+                        New here? <a href="#" id="toSignup" style="color:white; font-weight:bold;">Sign Up Free</a>
+                    </p>
+                </div>
+
+                <!-- SIGNUP FORM -->
+                <div id="signup-section" class="hidden">
+                    <form id="signupForm">
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="s_name" placeholder="Full Name" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="s_email" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="s_pass" placeholder="Create Password" required>
+                        </div>
+
+                        <!-- Role Selection -->
+                        <div style="display:flex; gap:10px; margin-bottom:15px;" class="role-selector">
+                            <label
+                                style="flex:1; cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; text-align:center; border:1px solid transparent;">
+                                <input type="radio" name="role" value="student" checked style="margin-right:5px;">
+                                Student
+                            </label>
+                            <label
+                                style="flex:1; cursor:pointer; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; text-align:center; border:1px solid transparent;">
+                                <input type="radio" name="role" value="host" style="margin-right:5px;"> Host
+                            </label>
+                        </div>
+
+                        <!-- OTP Section -->
+                        <div class="input-group" style="display:flex; gap:10px;">
+                            <input type="number" id="s_otp" placeholder="Enter OTP" style="padding-left:15px;">
+                            <button type="button" id="otpBtn" class="btn btn-outline"
+                                style="padding:10px; font-size:0.8rem; width:120px;">Get OTP</button>
+                        </div>
+                        <div id="otpGroup" class="hidden" style="margin-bottom:10px; font-size:0.8rem; color:#10b981;">
+                            <i class="fas fa-check-circle"></i> OTP Sent! Check your email.
+                        </div>
+
+                        <button type="submit" class="btn btn-primary auth-btn">Create Account</button>
+                    </form>
+
+                    <div class="divider"
+                        style="margin: 30px 0; position: relative; text-align: center; border-bottom: 1px solid var(--border);">
+                        <span
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-card); padding: 0 15px; color: var(--text-muted); font-size: 0.85rem;">OR</span>
+                    </div>
+
+                    <div class="social-auth" style="display: flex; flex-direction: column; gap: 12px;">
+                        <button type="button" class="btn btn-outline google-btn" onclick="handleSocialLogin('google')"
+                            style="width: 100%; border-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"
+                                height="18"> Sign up with Google
+                        </button>
+                        <button type="button" class="btn btn-outline github-btn" onclick="handleSocialLogin('github')"
+                            style="width: 100%; border-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <i class="fab fa-github" style="font-size: 1.2rem;"></i> Sign up with GitHub
+                        </button>
+                    </div>
+
+                    <p style="margin-top:20px; text-align:center; color:#94a3b8;">
+                        Already have an account? <a href="#" id="toLogin" style="color:white; font-weight:bold;">Log
+                            In</a>
+                    </p>
+                </div>
+
             </div>
-        </div>
 
-        <div class="auth-right">
-            
-            <form id="loginForm" class="auth-form active">
-                <h2>Sign In</h2>
-                <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="l_user" placeholder="Email or Username" required>
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="l_pass" placeholder="Password" required>
-                    <i class="fa-solid fa-eye toggle-pass" onclick="togglePass('l_pass', this)"></i>
-                </div>
-                <div class="form-options">
-                    <label><input type="checkbox"> Remember me</label>
-                    <span onclick="showForm('forgotForm')">Forgot Password?</span>
-                </div>
-                <button type="submit" class="btn btn-primary w-full">Login Securely</button>
-                <p class="switch-text">New here? <span onclick="showForm('signupForm')">Create Account</span></p>
-            </form>
-
-            <form id="signupForm" class="auth-form">
-                <h2>Create Account</h2>
-                
-                <div class="input-group">
-                    <i class="fa-solid fa-user-tag"></i>
-                    <input type="text" id="s_username" placeholder="Choose Username" required>
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="s_name" placeholder="Full Name" required>
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="s_email" placeholder="Email Address" required>
-                    <button type="button" class="btn-xs" onclick="sendSignupOTP()">Verify</button>
-                </div>
-                
-                <div class="input-group" id="signupOtpField" style="display:none;">
-                    <i class="fa-solid fa-key"></i>
-                    <input type="text" id="s_otp" placeholder="Enter OTP sent to Email">
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="s_pass" placeholder="Password (8-16 chars)" required>
-                    <i class="fa-solid fa-eye toggle-pass" onclick="togglePass('s_pass', this)"></i>
-                </div>
-                
-                <div class="input-group">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <input type="password" id="s_confirm_pass" placeholder="Confirm Password" required>
-                </div>
-
-                <div class="password-strength">
-                    <div id="strength-bar"></div>
-                </div>
-                <small id="pass-msg" style="color:gray; font-size:0.7rem;">Use 8-16 chars, mix of letters & numbers.</small>
-
-                <select id="s_role" style="background:#0F172A; color:white; border:1px solid #333; padding:10px; width:100%; border-radius:8px; margin-top:10px;">
-                    <option value="Student">Student</option>
-                    <option value="Professional">Professional</option>
-                </select>
-
-                <button type="submit" class="btn btn-primary w-full" style="margin-top:15px;">Sign Up</button>
-                <p class="switch-text">Already have an account? <span onclick="showForm('loginForm')">Login</span></p>
-            </form>
-
-            <form id="forgotForm" class="auth-form">
-                <h2>Reset Password</h2>
-                <p style="color:gray; font-size:0.9rem; margin-bottom:15px;">Enter your email to receive an OTP.</p>
-                
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="f_email" placeholder="Enter Registered Email" required>
-                </div>
-
-                <div class="input-group" id="forgotOtpField" style="display:none;">
-                    <i class="fa-solid fa-key"></i>
-                    <input type="text" id="f_otp" placeholder="Enter OTP">
-                </div>
-
-                <div class="input-group" id="newPassField" style="display:none;">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="f_new_pass" placeholder="New Password">
-                </div>
-
-                <button type="button" id="f_action_btn" class="btn btn-primary w-full" onclick="handleForgotFlow()">Send OTP</button>
-                <p class="switch-text"><span onclick="showForm('loginForm')">Back to Login</span></p>
-            </form>
-
+            <!-- Right Side: Visuals -->
+            <div class="auth-visual-side">
+                <div class="circle c1"></div>
+                <div class="circle c2"></div>
+                <h1 style="font-size:3rem; margin-bottom:20px;">Scale Your <br> Impact</h1>
+                <p style="font-size:1.1rem; opacity:0.8;">Join thousands of experts and learners on the safest verified
+                    live platform.</p>
+            </div>
         </div>
     </div>
 
-    <div id="toast-container"></div>
+    <!-- FORGOT PASSWORD MODAL -->
+    <div id="forgotModal" class="modal-overlay">
+        <div class="modal-box">
+            <span id="closeForgot" class="close-modal">&times;</span>
+            <h3>Reset Password</h3>
+            <p style="color:#94a3b8; margin-bottom:20px;">Enter your email to receive a reset link.</p>
+            <input type="email" id="reset_email" placeholder="Enter your email"
+                style="width:100%; padding:10px; margin-bottom:15px; border-radius:5px; border:none;">
+            <button id="sendResetBtn" class="btn btn-primary" style="width:100%;">Send Link</button>
+        </div>
+    </div>
 
-    <script src="auth.js"></script>
+    <div id="toast-box"></div>
+
+    <script type="module" src="js/auth-flow.js"></script>
 </body>
+
 </html>

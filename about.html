@@ -1,89 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>About | Zest Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | NexStream</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* PAGE SPECIFIC STYLES: ABOUT US */
+
+        /* Mission Section */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .mission-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-left: 4px solid var(--secondary);
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .mission-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mission-card h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .mission-card p {
+            color: var(--text-muted);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            border: var(--border);
+            transition: 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .member-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.3s;
+        }
+
+        .team-member:hover .member-img {
+            filter: grayscale(0%);
+        }
+
+        .member-info {
+            padding: 20px;
+        }
+
+        .member-info h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .member-info span {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* Timeline */
+        .timeline {
+            max-width: 800px;
+            margin: 50px auto 0;
+            position: relative;
+            border-left: 2px solid var(--border);
+            padding-left: 40px;
+        }
+
+        .timeline-item {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -49px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--secondary);
+        }
+
+        .timeline-date {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div> Zest<span>Hub</span></a>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="webinars.html">Webinars</a></li>
-            <li><a href="host.html">Host</a></li>
-            <li><a href="certificate.html">Certificate</a></li>
-            <li><a href="about.html" class="active">About</a></li>
-        </ul>
-        <button id="navLoginBtn" class="btn btn-primary" onclick="openAuthModal('login')">
-    <i class="fa-solid fa-user"></i> Login
-</button>    </nav>
 
-    <div class="page-container">
-        <h1 class="title">About <span class="grad-text">Zest Hub</span></h1>
-        <p class="subtitle">A student-led initiative to democratize tech education.</p>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+                <a href="compete.html" class="nav-link">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
 
-        <div class="glass-box" style="margin-bottom: 30px; text-align: left;">
-            <div style="width: 50px; height: 50px; background: rgba(59, 130, 246, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--secondary); font-size: 1.5rem; margin-bottom: 20px;"><i class="fa-solid fa-rocket"></i></div>
-            <h3>Our Mission</h3>
-            <p style="color: var(--text-gray); margin-top: 10px;">To create a platform where every student can share knowledge and learn from peers without barriers. We believe in community-driven growth.</p>
-        </div>
-
-        <div class="grid-2">
-            <div class="glass-box" style="text-align: left;">
-                <h3 style="color: var(--primary);">Our Vision</h3>
-                <p style="color: var(--text-gray); margin-top: 10px;">Building the largest network of student developers and learners.</p>
+                <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
+                    Panel</a>
+            </nav>
+            <div class="auth-buttons" id="auth-container">
+                <a href="login.html" class="btn btn-text">Log In</a>
             </div>
-            <div class="glass-box" style="text-align: left;">
-                <h3 style="color: var(--accent);">Our Values</h3>
-                <p style="color: var(--text-gray); margin-top: 10px;">Openness, Quality, and Peer Support.</p>
-            </div>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
         </div>
-        
+    </header>
 
-        <div class="info-box" style="margin-top: 40px; background: rgba(0, 229, 158, 0.05); border-color: rgba(0, 229, 158, 0.2);">
-            <h4 style="color: var(--primary);">Note:</h4>
-            <p style="color: var(--text-gray); font-size: 0.9rem;">Zest Hub is currently in <strong>Pilot Phase</strong>. We are actively adding features based on feedback.</p>
-        </div>
-    </div>
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <a href="index.html" class="logo" style="margin-bottom: 15px;">
-                    <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
-                    Zest<span>Hub</span>
-                </a>
-                <p style="color: var(--text-gray); line-height: 1.6; max-width: 300px;">
-                    The most advanced student learning platform. Built for students, by students.
+    <main>
+
+        <section class="hero-section" style="padding-bottom: 40px;">
+            <div class="container">
+                <div class="badge"
+                    style="background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 20px; color: var(--text-muted);">
+                    Our Story
+                </div>
+                <h1>Bridging the Gap Between <br><span class="gradient-text">Knowledge & Action</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 20px auto;">
+                    NexStream wasn't built just to host videos. It was built to create a community where experts can
+                    teach freely and learners can prove their skills with verified credentials.
                 </p>
             </div>
-            
-            <div class="footer-col">
-                <h4>Platform</h4>
-                <a href="webinars.html">Browse Webinars</a>
-                <a href="host.html">Host a Session</a>
-                <a href="certificate.html">Verify Certificate</a>
+        </section>
+
+        <section class="container" style="padding: 60px 20px;">
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h3><i class="fas fa-bullseye" style="color: var(--accent);"></i> Our Mission</h3>
+                    <p>To democratize education by providing high-quality, interactive streaming tools to everyone,
+                        everywhere, for free.</p>
+                </div>
+                <div class="mission-card">
+                    <h3><i class="fas fa-eye" style="color: var(--secondary);"></i> Our Vision</h3>
+                    <p>A world where a certificate from NexStream is the gold standard for hiring managers looking for
+                        proven skills.</p>
+                </div>
+                <div class="mission-card">
+                    <h3><i class="fas fa-heart" style="color: #ef4444;"></i> Our Values</h3>
+                    <p>Transparency, Community First, and Continuous Innovation. We believe in open-source learning.</p>
+                </div>
             </div>
-            
-            <div class="footer-col">
-                <h4>Legal</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Support</a>
+        </section>
+
+        <section
+            style="background: var(--bg-card); padding: 80px 0; border-top: var(--border); border-bottom: var(--border);">
+            <div class="container">
+                <div style="text-align: center;">
+                    <h2>Meet the Creators</h2>
+                    <p style="color: var(--text-muted);">The engineers and dreamers behind the code.</p>
+                </div>
+
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/300x300/1e293b/ffffff?text=Alex" alt="Team Member"
+                            class="member-img">
+                        <div class="member-info">
+                            <h4>Alex Tech</h4>
+                            <span>Lead Developer</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/300x300/1e293b/ffffff?text=Sarah" alt="Team Member"
+                            class="member-img">
+                        <div class="member-info">
+                            <h4>Sarah Design</h4>
+                            <span>UI/UX Specialist</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/300x300/1e293b/ffffff?text=Mike" alt="Team Member"
+                            class="member-img">
+                        <div class="member-info">
+                            <h4>Mike Ops</h4>
+                            <span>Product Manager</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-img"
+                            style="display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05);">
+                            <i class="fas fa-plus" style="font-size: 3rem; color: var(--text-muted);"></i>
+                        </div>
+                        <div class="member-info">
+                            <h4>You?</h4>
+                            <span><a href="requests.html" style="color: var(--primary);">Join the Team</a></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; font-size: 0.9rem;">
-            &copy; 2026 Zest Hub Premium. All rights reserved.
-        </div>
+        </section>
+
+        <section class="container" style="padding: 80px 0;">
+            <h2 style="text-align: center;">Our Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">January 2024</span>
+                    <h3>The Idea Born</h3>
+                    <p style="color: var(--text-muted);">Conceptualized during a hackathon to solve the issue of boring,
+                        static online classes.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">June 2024</span>
+                    <h3>Beta Launch</h3>
+                    <p style="color: var(--text-muted);">Released the first version of the streaming engine. 500 users
+                        signed up in the first week.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">Present Day</span>
+                    <h3>Global Expansion</h3>
+                    <p style="color: var(--text-muted);">Now serving thousands of students with features like instant
+                        certification and host monetization.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer
+        style="background: #0b1120; padding: 40px 0; border-top: var(--border); text-align: center; color: var(--text-muted);">
+        <p>&copy; 2026 NexStream. We are here to help.</p>
     </footer>
-    
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <h2>Login</h2><input type="text" placeholder="Email"><input type="password" placeholder="Password"><button class="btn btn-primary" style="width:100%">Login</button><p onclick="closeModal()" style="margin-top:10px; cursor:pointer">Close</p>
-        </div>
-    </div>
-    <script src="script.js"></script>
+
+    <script type="module" src="js/index.js"></script>
 </body>
+
 </html>

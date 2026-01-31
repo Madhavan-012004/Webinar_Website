@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compete | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Compete Page Specific Styles */
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at top, rgba(79, 70, 229, 0.15), transparent 60%);
+        }
+
+        .contest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .contest-card {
+            background: var(--bg-card);
+            border: var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+            position: relative;
+        }
+
+        .contest-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .contest-banner {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .contest-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(15, 23, 42, 1), transparent);
+            padding: 20px;
+            padding-bottom: 10px;
+        }
+
+        .contest-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contest-content {
+            padding: 20px;
+        }
+
+        .contest-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .prize-pool {
+            background: linear-gradient(90deg, rgba(234, 179, 8, 0.1), rgba(234, 179, 8, 0.05));
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            color: #facc15;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard-section {
+            background: var(--bg-card);
+            border: var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 150px 100px;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.2s;
+        }
+
+        .leaderboard-row:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .rank-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #0f172a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+                <a href="compete.html" class="nav-link active">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
+
+                <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
+                    Panel</a>
+            </nav>
+            <div class="auth-buttons" id="auth-container">
+                <a href="login.html" class="btn btn-text">Log In</a>
+            </div>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero -->
+        <div class="hero-section">
+            <span class="badge"
+                style="background: rgba(99, 102, 241, 0.1); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); padding: 5px 15px; border-radius: 20px; margin-bottom: 15px; display: inline-block;">
+                <i class="fas fa-trophy"></i> Global Hackathons
+            </span>
+            <h1 style="font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px;">
+                Build, <span class="gradient-text">Compete</span>, & Win
+            </h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px;">
+                Join the world's most innovative developers. Prove your skills in live coding challenges and earn global
+                recognition.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-primary">Find a Team</button>
+                <button class="btn btn-outline">View Leaderboard</button>
+            </div>
+        </div>
+
+        <!-- Active Contests -->
+        <h2 style="margin-top: 40px; border-left: 4px solid var(--accent); padding-left: 15px;">Live Challenges</h2>
+        <div class="contest-grid">
+
+            <!-- Contest 1 -->
+            <div class="contest-card">
+                <div class="contest-banner"
+                    style="background-image: url('https://via.placeholder.com/600x300/1e293b/ffffff?text=AI+Sprint');">
+                    <div class="contest-badge"><i class="fas fa-circle" style="color: #ef4444; font-size: 8px;"></i>
+                        LIVE</div>
+                    <div class="contest-overlay"></div>
+                </div>
+                <div class="contest-content">
+                    <h3 style="margin-bottom: 10px;">AI Innovation Sprint</h3>
+                    <div class="contest-meta">
+                        <span><i class="far fa-clock"></i> Ends in 48h</span>
+                        <span><i class="fas fa-user-friends"></i> 340 Joined</span>
+                    </div>
+                    <div class="prize-pool">
+                        <i class="fas fa-award"></i> $10,000 Prize Pool
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                        Build the next generation of generative AI tools using our provided API.
+                    </p>
+                    <button class="btn btn-primary" style="width: 100%;"
+                        onclick="alert('Registered for AI Sprint!')">Join Challenge</button>
+                </div>
+            </div>
+
+            <!-- Contest 2 -->
+            <div class="contest-card">
+                <div class="contest-banner"
+                    style="background-image: url('https://via.placeholder.com/600x300/0f172a/ffffff?text=Web3+Hack');">
+                    <div class="contest-badge" style="color: #4ade80;"><i class="fas fa-rocket"></i> Starts Soon</div>
+                    <div class="contest-overlay"></div>
+                </div>
+                <div class="contest-content">
+                    <h3 style="margin-bottom: 10px;">Decentralized Future</h3>
+                    <div class="contest-meta">
+                        <span><i class="far fa-calendar"></i> Oct 24, 2026</span>
+                        <span><i class="fas fa-user-friends"></i> 120 Registered</span>
+                    </div>
+                    <div class="prize-pool"
+                        style="color: #60a5fa; border-color: rgba(96, 165, 250, 0.3); background: rgba(96, 165, 250, 0.1);">
+                        <i class="fas fa-cube"></i> 5 ETH + Merch
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                        Create a dApp that solves real-world logistics problems.
+                    </p>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="alert('Remind me set!')">Set
+                        Reminder</button>
+                </div>
+            </div>
+
+            <!-- Contest 3 -->
+            <div class="contest-card">
+                <div class="contest-banner"
+                    style="background-image: url('https://via.placeholder.com/600x300/334155/ffffff?text=Design+Duel');">
+                    <div class="contest-badge"><i class="fas fa-circle" style="color: #ef4444; font-size: 8px;"></i>
+                        LIVE</div>
+                </div>
+                <div class="contest-content">
+                    <h3 style="margin-bottom: 10px;">UI/UX Design Duel</h3>
+                    <div class="contest-meta">
+                        <span><i class="far fa-clock"></i> Ends in 2h</span>
+                        <span><i class="fas fa-paint-brush"></i> 54 Submissions</span>
+                    </div>
+                    <div class="prize-pool"
+                        style="color: #f472b6; border-color: rgba(244, 114, 182, 0.3); background: rgba(244, 114, 182, 0.1);">
+                        <i class="fas fa-star"></i> Featured Portfolio
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                        Redesign a popular app interface in 4 hours.
+                    </p>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Submission area locked!')"
+                        disabled>Submission Closed</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Top Solvers</h2>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-text" style="color: white;">This Week</button>
+                    <button class="btn btn-text">All Time</button>
+                </div>
+            </div>
+
+            <div class="leaderboard-row"
+                style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                <span>Rank</span>
+                <span>User</span>
+                <span>Points</span>
+                <span>Badges</span>
+            </div>
+
+            <div class="leaderboard-row">
+                <div class="rank-circle" style="background: #fbbf24;">1</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://via.placeholder.com/30" style="border-radius: 50%;">
+                    <span style="font-weight: 600;">Sarah Jenkins</span>
+                </div>
+                <span style="color: var(--accent);">24,500 XP</span>
+                <span><i class="fas fa-medal" style="color: #fbbf24;"></i> x12</span>
+            </div>
+
+            <div class="leaderboard-row">
+                <div class="rank-circle" style="background: #94a3b8;">2</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://via.placeholder.com/30" style="border-radius: 50%;">
+                    <span style="font-weight: 600;">DevMaster_99</span>
+                </div>
+                <span style="color: var(--accent);">21,200 XP</span>
+                <span><i class="fas fa-medal" style="color: #94a3b8;"></i> x8</span>
+            </div>
+
+            <div class="leaderboard-row">
+                <div class="rank-circle" style="background: #b45309; color: white;">3</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="https://via.placeholder.com/30" style="border-radius: 50%;">
+                    <span style="font-weight: 600;">AlexCodez</span>
+                </div>
+                <span style="color: var(--accent);">19,800 XP</span>
+                <span><i class="fas fa-medal" style="color: #b45309;"></i> x5</span>
+            </div>
+        </div>
+
+    </main>
+
+    <footer
+        style="background: #0b1120; padding: 40px 0; border-top: var(--border); text-align: center; color: var(--text-muted); margin-top: 80px;">
+        <p>&copy; 2026 NexStream. Explore limitless learning.</p>
+    </footer>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

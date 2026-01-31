@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Specific Profile Styles */
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+
+        .profile-cover {
+            height: 150px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+        }
+
+        .profile-header-section {
+            padding: 0 40px;
+            position: relative;
+            transform: translateY(-50px);
+            display: flex;
+            align-items: flex-end;
+            gap: 25px;
+            margin-bottom: -30px;
+        }
+
+        .profile-pic-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-pic-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            font-size: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .profile-details {
+            flex: 1;
+            padding-bottom: 10px;
+        }
+
+        .profile-details h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-body {
+            padding: 40px;
+        }
+
+        .info-group {
+            margin-bottom: 25px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            padding: 12px 15px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: white;
+            width: 100%;
+            display: block;
+        }
+
+        input.info-value:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .badge-role {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            text-transform: capitalize;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+                <a href="compete.html" class="nav-link">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
+            </nav>
+            <div class="auth-buttons" id="auth-container">
+                <!-- JS Populated -->
+            </div>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 100px;">
+
+        <div class="profile-container">
+            <div class="profile-cover"></div>
+
+            <div class="profile-header-section">
+                <!-- clickable avatar container -->
+                <div class="profile-pic-large" id="avatar-container" style="position: relative; cursor: pointer;"
+                    title="Click to change photo">
+                    <div class="profile-pic-inner" id="p-avatar-text">U</div>
+                    <img id="p-avatar-img" src=""
+                        style="width:100%; height:100%; border-radius:50%; object-fit:cover; display:none;">
+
+                    <!-- Camera Icon Overlay -->
+                    <div
+                        style="position: absolute; bottom: 0; right: 0; background: var(--primary); width: 35px; height: 35px; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 3px solid var(--bg-card);">
+                        <i class="fas fa-camera" style="font-size: 0.9rem; color: white;"></i>
+                    </div>
+                </div>
+
+                <div class="profile-details">
+                    <h1 id="p-name-display">Loading...</h1>
+                    <span class="badge-role" id="p-role">Student</span>
+                    <p id="p-college-display" style="color:var(--text-muted); margin-top:5px; font-size:0.95rem;"></p>
+                </div>
+                <button class="btn btn-primary" id="save-btn" style="display:none; margin-bottom: 12px;">Save
+                    Changes</button>
+            </div>
+
+            <div class="profile-body">
+                <div class="info-group">
+                    <label class="info-label">Full Name</label>
+                    <input type="text" class="info-value" id="p-name-input">
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">College / Company</label>
+                    <input type="text" class="info-value" id="p-college-input" placeholder="e.g. Stanford University">
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Profile Image URL</label>
+                    <input type="url" class="info-value" id="p-photo-input"
+                        placeholder="https://example.com/my-photo.jpg">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">* Paste a direct link to an
+                        image (or click the avatar above).</p>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Email Address</label>
+                    <div class="info-value" style="opacity: 0.7; cursor: not-allowed;" id="p-email">user@example.com
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">User ID</label>
+                    <div class="info-value" style="font-family: monospace; color: var(--text-muted); font-size: 0.9rem;"
+                        id="p-uid">...</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Account Created</label>
+                    <div class="info-value" id="p-joined">...</div>
+                </div>
+
+                <hr style="border-color: var(--border); margin: 30px 0;">
+
+                <button id="logout-btn-page" class="btn btn-outline"
+                    style="width: 100%; border-color: #ef4444; color: #ef4444;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="toast-box"></div>
+
+    <script type="module" src="js/profile.js"></script>
+</body>
+
+</html>

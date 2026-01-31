@@ -1,152 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zest Hub | Premium Learning</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NexStream | The Future of Live Learning</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" class="logo">
-            <div class="logo-icon"><i class="fa-solid fa-code"></i></div>
-            Zest<span>Hub</span>
-        </a>
-        <ul class="nav-links">
-            <li><a href="index.html" style="color: var(--primary);">Home</a></li>
-            <li><a href="webinars.html">Webinars</a></li>
-            <li><a href="host.html">Host</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
-        <button id="navLoginBtn" class="btn btn-primary" onclick="window.location.href='login.html'">
-            <i class="fa-solid fa-user"></i> Login
-        </button>
-    </nav>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <i class="fas fa-bolt"></i> Nex<span>Stream</span>
+            </a>
 
-    <div id="toast-container"></div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+                <a href="compete.html" class="nav-link">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
 
-    <div class="hero-wrapper">
-        <div class="hero-text-content">
-            <div class="badge">🚀 Student-Led Initiative</div>
-            <h1 class="title">
-                Learn. Build. <br> <span class="grad-text">Dominate.</span>
-            </h1>
-            <p class="subtitle">
-                Join the most premium student community. Attend high-quality webinars, connect with toppers, and earn verified certificates.
-            </p>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="window.location.href='webinars.html'">
-                    Explore Webinars <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button class="btn btn-outline" onclick="window.location.href='host.html'">
-                    Host Session
-                </button>
+                <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
+                    Panel</a>
+            </nav>
+
+            <div class="auth-buttons" id="auth-container">
+                <a href="login.html" class="btn btn-text">Log In</a>
+                <a href="login.html?mode=signup" class="btn btn-primary">Sign Up Free</a>
+            </div>
+
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
             </div>
         </div>
+    </header>
 
-        <div class="hero-image-content">
-            <div class="glass-frame">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" class="hero-slide active" alt="Coding">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" class="hero-slide" alt="Meeting">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" class="hero-slide" alt="University">
+    <section class="hero-section">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="badge-pill"><i class="fas fa-star"></i> #1 Platform for Verified Learning</div>
+                <h1>Unlock Potential. <br> <span class="gradient-text">Stream Knowledge.</span></h1>
+                <p>The all-in-one ecosystem for interactive live learning. Hosts can monetize expertise, Admins ensure
+                    quality, and Learners earn verified certificates.</p>
+
+                <div class="hero-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Find a topic (e.g. React, Business, AI)...">
+                    <button>Search</button>
+                </div>
+
+                <div class="cta-group">
+                    <a href="webinars.html" class="btn btn-lg btn-glow">
+                        <i class="fas fa-rocket"></i> Start Learning
+                    </a>
+                    <a href="host.html" class="btn btn-lg btn-outline">
+                        <i class="fas fa-microphone-alt"></i> Become a Host
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="live-card">
+                    <div class="live-badge">🔴 LIVE NOW</div>
+                    <img src="https://via.placeholder.com/300x180/1e293b/ffffff?text=Live+Session"
+                        alt="Live Webinar Preview" class="preview-img">
+                    <div class="card-info">
+                        <h4>Future of AI Engineering</h4>
+                        <p>with Dr. Sarah Smith</p>
+                        <div class="users-watching">
+                            <span><i class="fas fa-eye"></i> 1,240 watching</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats-banner">
+        <div class="container stats-grid">
+            <div class="stat">
+                <h2>10k+</h2>
+                <p>Active Learners</p>
+            </div>
+            <div class="stat">
+                <h2>500+</h2>
+                <p>Daily Webinars</p>
+            </div>
+            <div class="stat">
+                <h2>Verified</h2>
+                <p>Certificates</p>
             </div>
         </div>
     </div>
 
-    <div class="grid-container">
-        <div class="grid-3">
-            <div class="feature-card">
-                <div class="icon-box"><i class="fa-solid fa-bolt"></i></div>
-                <h3>Fast Learning</h3>
-                <p>No boring lectures. Short, impactful sessions from seniors who cracked the interviews.</p>
+    <section class="role-features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tailored for Everyone</h2>
+                <p>One platform, multiple possibilities.</p>
             </div>
-            <div class="feature-card">
-                <div class="icon-box"><i class="fa-solid fa-certificate"></i></div>
-                <h3>Verified Certs</h3>
-                <p>Get premium participation certificates directly to your email after every session.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon-box"><i class="fa-solid fa-users"></i></div>
-                <h3>Top Community</h3>
-                <p>Network with the best minds in the college. Share ideas and build projects together.</p>
+
+            <div class="split-features">
+                <div class="role-card learner-side">
+                    <div class="role-icon"><i class="fas fa-user-graduate"></i></div>
+                    <h3>For Learners</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>Live Interaction:</strong> Q&A and Polls.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Verified Proof:</strong> Auto-generated
+                            Certificates.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Reminders:</strong> Never miss a session.</li>
+                    </ul>
+                    <a href="webinars.html" class="link-arrow">Browse Catalog <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="role-card host-side">
+                    <div class="role-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>For Hosts</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>Global Reach:</strong> Stream to thousands.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Analytics:</strong> Track attendance.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Monetization:</strong> Paid or free tickets.
+                        </li>
+                    </ul>
+                    <a href="host.html" class="link-arrow">Start Streaming <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="logo" style="margin-bottom: 15px;">Zest<span>Hub</span></div>
-                <p style="color: var(--text-gray); line-height: 1.6;">Built for students, by students.</p>
+    <footer class="main-footer">
+        <div class="container footer-layout">
+            <div class="footer-brand">
+                <h3>NexStream</h3>
+                <p>Empowering the world to teach and learn online.</p>
             </div>
             <div class="footer-col">
                 <h4>Platform</h4>
-                <a href="webinars.html">Browse Webinars</a>
-                <a href="host.html">Host a Session</a>
+                <a href="webinars.html">Browse</a>
+                <a href="host.html">Host Studio</a>
+                <a href="certificate.html">Verify Certificate</a>
             </div>
             <div class="footer-col">
-                <h4>Legal</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <h4>Support</h4>
+                <a href="about.html">About Us</a>
+                <a href="requests.html">Help Center</a>
+                <a href="login.html">Login / Sign Up</a>
             </div>
         </div>
-        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
-            &copy; 2026 Zest Hub Premium. All rights reserved.
+        <div class="copyright">
+            <p>&copy; 2026 NexStream Inc. All rights reserved.</p>
         </div>
     </footer>
 
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button id="tab-login" onclick="switchTab('login')" class="btn btn-primary" style="flex:1;">Login</button>
-                <button id="tab-signup" onclick="switchTab('signup')" class="btn btn-outline" style="flex:1; border:none; color:gray;">Sign Up</button>
-            </div>
-
-            <form id="loginForm">
-                <h2 style="text-align:center; margin-bottom:20px;">Welcome Back</h2>
-                <input type="text" id="l_email" placeholder="Email" required style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                <input type="password" id="l_pass" placeholder="Password" required style="width:100%; padding:12px; margin-bottom:15px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                <button class="btn btn-primary" style="width:100%; justify-content:center;">Login Now</button>
-            </form>
-
-            <form id="signupForm" style="display:none;">
-                <h2 style="text-align:center; margin-bottom:20px;">Create Account</h2>
-                <input type="text" id="s_name" placeholder="Full Name" required style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                <input type="email" id="s_email" placeholder="Email Address" required style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                <select id="s_role" onchange="toggleCollegeField()" style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                    <option value="Student">Student</option>
-                    <option value="Professional">Professional</option>
-                </select>
-                <div id="collegeField"><input type="text" id="s_college" placeholder="College Name" required style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;"></div>
-                <input type="password" id="s_pass" placeholder="Password" required style="width:100%; padding:12px; margin-bottom:15px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                <button class="btn btn-primary" style="width:100%; justify-content:center;">Sign Up</button>
-            </form>
-
-            <p onclick="closeAuthModal()" style="text-align:center; margin-top:20px; cursor:pointer; color:gray;">Close</p>
-        </div>
-    </div>
-
-    <div id="regModal" class="modal">
-        <div class="modal-content">
-            <h2 style="text-align: center; margin-bottom: 10px;">Confirm Registration</h2>
-            <p id="regTopic" style="text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 600;"></p>
-            
-            <form id="regForm">
-                <label style="color: var(--text-gray); font-size: 0.85rem;">Full Name</label>
-                <input type="text" id="r_name" placeholder="Name" required style="width:100%; padding:12px; margin-bottom:10px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                
-                <label style="color: var(--text-gray); font-size: 0.85rem;">Email Address</label>
-                <input type="email" id="r_email" placeholder="Email" required style="width:100%; padding:12px; margin-bottom:15px; background:#1E293B; border:1px solid #333; color:white; border-radius:6px;">
-                
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Confirm & Register</button>
-            </form>
-
-            <p onclick="closeRegModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Cancel</p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script type="module" src="js/index.js"></script>
 </body>
+
 </html>

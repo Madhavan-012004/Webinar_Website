@@ -1,138 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Webinars | Zest Hub</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Webinars | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* PAGE SPECIFIC STYLES */
+
+        .spotlight-card {
+            background: linear-gradient(to right, #1e293b, #0f172a), url('https://via.placeholder.com/1200x400/0f172a/ffffff?text=Featured+Event');
+            background-blend-mode: overlay;
+            background-size: cover;
+            border-radius: 20px;
+            padding: 60px;
+            border: var(--border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+        }
+
+        .filter-bar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 75px;
+            z-index: 900;
+            border-top: var(--border);
+            border-bottom: var(--border);
+        }
+
+        /* FILTER CHIP STYLES */
+        .filter-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .filter-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+        }
+
+        #search-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 10px 20px 10px 45px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        #search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+            outline: none;
+        }
+
+        /* CARD STYLES */
+        .w-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: var(--border);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .w-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+        }
+
+        .w-thumb {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .w-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .w-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .w-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .w-footer {
+            margin-top: auto;
+            border-top: var(--border);
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo"><div class="logo-icon"><i class="fa-solid fa-code"></i></div> Zest<span>Hub</span></a>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="webinars.html" class="active">Webinars</a></li>
-            <li><a href="host.html">Host</a></li>
-            <li><a href="certificate.html">Certificate</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
-        <button id="navLoginBtn" class="btn btn-primary" onclick="openAuthModal('login')"><i class="fa-solid fa-user"></i> Login</button>
-    </nav>
 
-    <div class="page-container">
-        
-        <div class="glass-box" style="text-align: center; margin-bottom: 50px; border: 1px solid var(--primary);">
-            <h2 class="grad-text">Host Your Own Session</h2>
-            <p class="subtitle" style="margin-bottom: 20px;">Share your knowledge with thousands of students.</p>
-            <button class="btn btn-primary" style="margin: 0 auto;" onclick="openHostModal()">
-                <i class="fa-solid fa-plus"></i> Create Webinar
-            </button>
-        </div>
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link active">Explore</a>
+                <a href="compete.html" class="nav-link">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
 
-        <div style="text-align: left; margin-bottom: 20px;">
-            <h3 style="color: #ef4444; display: flex; align-items: center; gap: 10px;">
-                <span style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #ef4444;"></span> 
-                Live Now
-            </h3>
-        </div>
-        <div class="grid-3" style="margin-top: 10px; margin-bottom: 50px;">
-            <div class="glass-box" style="text-align: center; padding: 40px; grid-column: 1 / -1;">
-                <p style="color: var(--text-gray);">No live sessions at the moment.</p>
+                <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
+                    Panel</a>
+            </nav>
+            <div class="auth-buttons" id="auth-container">
+                <a href="login.html" class="btn btn-text">Log In</a>
             </div>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
         </div>
+    </header>
 
-        <div style="text-align: left; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <h3 style="color: var(--primary);">Upcoming Sessions</h3>
-            <div class="tabs-container" style="margin-bottom: 0;">
-                <button class="tab-btn active" onclick="filterWebinars('all', this)">All</button>
-                <button class="tab-btn" onclick="filterWebinars('free', this)">Free</button>
-                <button class="tab-btn" onclick="filterWebinars('paid', this)">Paid</button>
-            </div>
+    <main>
 
-            
-        </div>
-
-        <div id="dynamicWebinars" class="grid-3" style="margin-top: 10px; margin-bottom: 50px;">
-            <p style="color: var(--text-gray); text-align: center; grid-column: 1/-1;">Loading...</p>
-        </div>
-
-        <div style="text-align: left; margin-bottom: 20px;">
-            <h3 style="color: var(--text-gray);">Past Recordings</h3>
-        </div>
-        <div class="grid-3" style="margin-top: 10px;">
-             <div class="glass-box" style="text-align: left; opacity: 0.7;">
-                <span style="background: rgba(255, 255, 255, 0.1); color: var(--text-gray); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;">Ended</span>
-                <h3 style="margin: 15px 0; color: var(--text-gray);">Intro to AI/ML</h3>
-                <button class="btn btn-outline" style="width: 100%; justify-content: center; margin-top: 20px;">Watch Recording</button>
-            </div>
-        </div>
-
-    </div>
-
-    <div id="authModal" class="modal">
-        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary); width: 400px;">
-            <div style="display: flex; gap: 0; margin-bottom: 25px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 5px;">
-                <button id="tab-login" onclick="switchTab('login')" style="flex: 1; padding: 10px; border: none; background: var(--primary); color: #000; border-radius: 6px; font-weight: 600; cursor: pointer;">Login</button>
-                <button id="tab-signup" onclick="switchTab('signup')" style="flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-gray); border-radius: 6px; font-weight: 600; cursor: pointer;">Sign Up</button>
-            </div>
-            <form id="loginForm" style="display: block;">
-                <h2 style="text-align: center; margin-bottom: 20px;">Welcome Back!</h2>
-                <input type="text" id="l_email" placeholder="Email" required style="width: 100%; margin-bottom: 10px;">
-                <input type="password" id="l_pass" placeholder="Password" required style="width: 100%; margin-bottom: 15px;">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Login Now</button>
-            </form>
-            <form id="signupForm" style="display: none;">
-                <h2 style="text-align: center; margin-bottom: 20px;">Create Account</h2>
-                <input type="text" id="s_name" placeholder="Full Name" required style="width: 100%; margin-bottom: 10px;">
-                <input type="email" id="s_email" placeholder="Email" required style="width: 100%; margin-bottom: 10px;">
-                <select id="s_role" onchange="toggleCollegeField()" style="background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; width: 100%; padding: 12px; margin-bottom: 10px;">
-                    <option value="Student">Student</option>
-                    <option value="Professional">Professional</option>
-                </select>
-                <div id="collegeField"><input type="text" id="s_college" placeholder="School Name" required style="width: 100%; margin-bottom: 10px;"></div>
-                <input type="password" id="s_pass" placeholder="Password" required style="width: 100%; margin-bottom: 15px;">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
-            </form>
-            <p onclick="closeAuthModal()" style="margin-top: 20px; cursor: pointer; color: var(--text-gray); text-align: center;">Close</p>
-        </div>
-    </div>
-
-    <div id="hostModal" class="modal">
-        <div class="modal-content" style="max-width: 600px; text-align: left; border: 1px solid var(--primary);">
-            <h2 style="margin-bottom: 20px; text-align: center;">Submit Proposal</h2>
-            <form id="hostForm">
-                <input type="text" id="w_title" placeholder="Title" required style="width: 100%; margin-bottom: 10px;">
-                <input type="text" id="w_speaker" placeholder="Speaker" required style="width: 100%; margin-bottom: 10px;">
-                <div style="display: flex; gap: 20px;">
-                    <input type="date" id="w_date" required style="flex: 1;">
-                    <input type="time" id="w_time" required style="flex: 1;">
-                    <select id="w_type" style="flex: 1; background: #0F172A; border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 14px;">
-                        <option value="Free">Free</option>
-                        <option value="Paid">Paid</option>
-                    </select>
+        <section class="container" style="padding-top: 40px;">
+            <div class="spotlight-card">
+                <div style="position: relative; z-index: 2; max-width: 600px;">
+                    <span class="badge"
+                        style="background: #ef4444; color: white; margin-bottom: 15px; display: inline-block;">
+                        <i class="fas fa-circle"></i> LIVE NOW
+                    </span>
+                    <h1 style="font-size: 3rem; line-height: 1.1; margin-bottom: 20px;">The Future of <br><span
+                            class="gradient-text">Quantum Computing</span></h1>
+                    <p style="font-size: 1.2rem; color: #e2e8f0; margin-bottom: 30px;">
+                        Join Dr. Eleanor Vance as she breaks down the complexities of qubits and the next generation of
+                        processors.
+                    </p>
+                    <a href="#" class="btn btn-primary">Join Session</a>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Submit</button>
-            </form>
-            <p onclick="closeHostModal()" style="margin-top: 20px; cursor: pointer; text-align: center;">Close</p>
-        </div>
-    </div>
+            </div>
+        </section>
 
-    <div id="regModal" class="modal">
-        <div class="modal-content" style="text-align: left; border: 1px solid var(--primary);">
-            <h2 style="text-align: center; margin-bottom: 10px;">Confirm Registration</h2>
-            <p id="regTopic" style="text-align: center; color: var(--primary); margin-bottom: 20px; font-weight: 600;"></p>
-            <form id="regForm">
-                <input type="text" id="r_name" placeholder="Name" required style="width: 100%; margin-bottom: 10px;">
-                <input type="email" id="r_email" placeholder="Email" required style="width: 100%; margin-bottom: 15px;">
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm</button>
-            </form>
-            <p onclick="closeRegModal()" style="margin-top: 20px; cursor: pointer; text-align: center;">Cancel</p>
+        <div class="filter-bar">
+            <div class="container"
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div
+                    style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; -ms-overflow-style: none; scrollbar-width: none;">
+                    <button class="filter-chip active">All</button>
+                    <button class="filter-chip">Technology</button>
+                    <button class="filter-chip">Design</button>
+                    <button class="filter-chip">Business</button>
+                    <button class="filter-chip">Marketing</button>
+                    <button class="filter-chip">Science</button>
+                </div>
+                <div class="input-group" style="margin-bottom: 0; width: 300px; position: relative;">
+                    <i class="fas fa-search"
+                        style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
+                    <input type="text" id="search-input" placeholder="Search sessions...">
+                </div>
+            </div>
         </div>
-    </div>
 
-    <footer>
-        <div style="text-align: center; color: var(--text-gray); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px;">&copy; 2026 Zest Hub Premium.</div>
+        <section class="container" style="padding: 40px 0;">
+            <div class="stats-grid" id="webinar-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Loading active sessions...
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer
+        style="background: #0b1120; padding: 40px 0; border-top: var(--border); text-align: center; color: var(--text-muted);">
+        <p>&copy; 2026 NexStream. Explore limitless learning.</p>
     </footer>
-    <script src="script.js"></script>
+
+    <!-- REGISTRATION MODAL -->
+    <div id="regModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-modal" id="closeRegModal">&times;</span>
+            <h2 style="margin-bottom: 5px;">Secure Your Spot</h2>
+            <p id="reg-webinar-title" style="color: var(--accent); margin-bottom: 20px; font-weight: bold;"></p>
+
+            <form id="regForm">
+                <input type="hidden" id="reg-wid">
+                <input type="hidden" id="reg-wtitle">
+
+                <div class="input-group">
+                    <label style="color:var(--text-muted); font-size:0.9rem;">Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="John Doe">
+                </div>
+
+                <div class="input-group">
+                    <label style="color:var(--text-muted); font-size:0.9rem;">Email Address</label>
+                    <input type="email" id="reg-email" required placeholder="john@example.com">
+                </div>
+
+                <div class="input-group">
+                    <label style="color:var(--text-muted); font-size:0.9rem;">Phone (Optional)</label>
+                    <input type="tel" id="reg-phone" placeholder="+1 234 567 890">
+                </div>
+
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="fas fa-info-circle" style="color: var(--primary);"></i> You will receive a confirmation
+                    email with the joining link.
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-box"></div>
+
+    <script type="module" src="js/webinar-viewer.js"></script>
 </body>
+
 </html>

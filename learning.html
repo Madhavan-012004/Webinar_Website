@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Learning | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+                <a href="compete.html" class="nav-link">Compete</a>
+                <a href="certificate.html" class="nav-link">Certificates</a>
+
+                <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
+                    Panel</a>
+            </nav>
+            <div class="auth-buttons" id="auth-container">
+                <!-- JS populated -->
+            </div>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 50px; padding-bottom: 100px;">
+        <div class="dash-header" style="margin-bottom: 30px;">
+            <div>
+                <h1 style="font-size: 2.2rem; margin-bottom: 5px;">My Learning</h1>
+                <p style="color: var(--text-muted);">Access your registered sessions and join live events.</p>
+            </div>
+        </div>
+
+        <!-- Registered Webinars Grid -->
+        <h3 style="border-left: 4px solid var(--primary); padding-left: 15px; margin-bottom: 30px;">Enrolled Sessions
+        </h3>
+
+        <div id="learning-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px;">
+            <div
+                style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(30, 41, 59, 0.3); border-radius: 12px;">
+                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--primary);"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="toast-box"></div>
+    <script type="module" src="js/dashboard-student.js"></script>
+</body>
+
+</html>
