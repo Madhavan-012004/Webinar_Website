@@ -71,6 +71,10 @@ export function updateGlobalHeader(user, role = 'student') {
                     <a href="registered.html" class="dropdown-item">
                         <i class="fas fa-calendar-alt"></i> My Schedule
                     </a>
+
+                    <a href="recordings.html" class="dropdown-item">
+                        <i class="fas fa-play-circle" style="color: var(--secondary);"></i> My Recordings
+                    </a>
                     
                     ${role === 'host' ? `
                     <a href="host.html" class="dropdown-item">

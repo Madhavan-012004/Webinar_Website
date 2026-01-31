@@ -22,6 +22,7 @@ export const db = getFirestore(app);
 // EmailJS Config
 export const EMAILJS_SERVICE_ID = "service_q2ub7ml";
 export const EMAILJS_TEMPLATE_ID = "template_k78lkgs";
+export const EMAILJS_CERT_TEMPLATE_ID = "template_97ztr9i";
 export const EMAILJS_PUBLIC_KEY = "tGIO9L4chGFacWG4G";
 
 export const initEmailJS = () => {

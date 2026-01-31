@@ -1,6 +1,6 @@
 import { collection, query, where, onSnapshot, getDoc, doc, addDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { showToast, updateGlobalHeader } from './utils.js';
-import { auth, db, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, initEmailJS } from './config.js';
+import { auth, db, EMAILJS_SERVICE_ID, EMAILJS_CERT_TEMPLATE_ID, initEmailJS } from './config.js';
 
 let player;
 let progressInterval;
@@ -109,8 +109,8 @@ function initClaimableWebinars(user) {
                     <div style="height:180px; position:relative;">
                         <img src="${videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'https://via.placeholder.com/400x250'}" style="width:100%; height:100%; object-fit:cover;">
                         <div style="position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center;">
-                             <button class="btn btn-primary" onclick="window.startLesson('${w.id}', '${videoId}', '${w.title.replace(/'/g, "\\'")}', '${w.regId}')">
-                                <i class="fas fa-play"></i> Watch to Earn
+                             <button class="btn btn-primary" onclick="window.claimCertificate('${w.regId}', '${w.title.replace(/'/g, "\\'")}', '${w.hostName || ''}')">
+                                <i class="fas fa-download"></i> Check & Download
                              </button>
                         </div>
                     </div>
@@ -130,123 +130,155 @@ function initClaimableWebinars(user) {
     });
 }
 
-window.startLesson = (id, videoId, title, regId) => {
-    if (!videoId || videoId === 'null') {
-        showToast("Invalid YouTube URL.", "error");
-        return;
+// --- BACKGROUND CERTIFICATE GENERATION ---
+
+// New Logic: Check Minutes Watched > Threshold
+window.claimCertificate = async (regId, title, hostName) => {
+    showToast("Checking eligibility...", "info");
+
+    try {
+        const regRef = doc(db, "registrations", regId);
+        const regSnap = await getDoc(regRef);
+
+        if (!regSnap.exists()) {
+            showToast("Registration not found.", "error");
+            return;
+        }
+
+        const data = regSnap.data();
+        const watched = data.minutesWatched || 0;
+        const required = 1; // DEMO: 1 minute threshold (Production: ~30)
+
+        if (watched < required) {
+            showToast(`You have watched ${Math.floor(watched)} mins. Required: ${required} mins.`, "warning");
+            setTimeout(() => {
+                showToast("Go to 'Recordings' to watch more!", "info");
+            }, 2000);
+            return;
+        }
+
+        // ELIGIBLE: Generate in Background
+        generateAndSaveCertificate(regId, title, hostName, userData.name);
+
+    } catch (e) {
+        console.error(e);
+        showToast("Error checking status", "error");
     }
-    currentWebinar = { id, videoId, title, regId };
-    isUnlocked = false;
-    document.getElementById('uiCourseName').innerText = title;
-    document.getElementById('progressText').innerText = "Progress: 0%";
-    document.getElementById('progressBar').style.width = "0%";
-    document.getElementById('statusBadge').innerHTML = '<i class="fas fa-lock"></i> Locked';
-    document.getElementById('statusBadge').style.color = "#ef4444";
-    document.getElementById('certificate-wrapper').style.display = 'none';
-    document.getElementById('certificate-classroom').style.display = 'block';
-    document.getElementById('webinar-list-grid').style.display = 'none';
-    const videoWrapper = document.getElementById('video-wrapper');
-    videoWrapper.innerHTML = `
-        <div id="player-loading" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#000; color:white; z-index:1;">
-            <i class="fas fa-circle-notch fa-spin fa-2x" style="margin-bottom:15px; color:var(--primary);"></i>
-            <span>Initializing Secure Player...</span>
-        </div>
-        <div id="youtube-player" style="position:absolute; top:0; left:0; width:100%; height:100%;"></div>
-    `;
-    if (window.YT && window.YT.Player) {
-        initPlayer(videoId);
-    } else {
-        let retries = 0;
-        const checkAPI = setInterval(() => {
-            if (window.YT && window.YT.Player) {
-                clearInterval(checkAPI);
-                initPlayer(videoId);
-            } else if (retries > 10) {
-                clearInterval(checkAPI);
-                showToast("Player failed to load.", "error");
-            }
-            retries++;
+}
+
+async function generateAndSaveCertificate(regId, courseTitle, hostName, studentName) {
+    showToast("🎉 Eligible! Generating Certificate...", "success");
+
+    const certId = `NS-${Math.floor(100000 + Math.random() * 900000)}`;
+    const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    try {
+        // 1. Create Certificate Record
+        await addDoc(collection(db, "issued_certificates"), {
+            certId: certId,
+            studentId: auth.currentUser.uid,
+            studentName: studentName,
+            courseTitle: courseTitle,
+            date: date,
+            hostName: hostName,
+            timestamp: new Date()
+        });
+
+        // 2. Mark Registration Completed
+        await updateDoc(doc(db, "registrations", regId), {
+            status: "completed",
+            certificateId: certId,
+            completedAt: new Date()
+        });
+
+        showToast("Certificate Generated! Downloading...", "success");
+
+        // 3. Trigger Download (Silent)
+        createHiddenCertificateCanvas(studentName, courseTitle, certId, date);
+
+        // 4. Send Email
+        sendEmailWithId(userData.email, studentName, courseTitle, certId);
+
+    } catch (e) {
+        console.error("Cert Gen Error:", e);
+        showToast("Error saving certificate.", "error");
+    }
+}
+
+function createHiddenCertificateCanvas(student, course, id, date) {
+    // This function creates an off-screen canvas/element to generate the image
+    // For simplicity, we can use the existing hidden template in the HTML if available,
+    // or create one dynamically.
+
+    // Assuming 'certificate-template' exists in HTML but hidden
+    const template = document.getElementById('certificate-template');
+    if (template) {
+        document.getElementById('certStudentName').innerText = student;
+        document.getElementById('certCourseName').innerText = course;
+        document.getElementById('certID').innerText = id;
+        document.getElementById('certDate').innerText = date;
+
+        // Use dom-to-image or html2canvas
+        // Small delay to let text render
+        setTimeout(() => {
+            window.downloadCertificateImage(template, course);
         }, 500);
     }
-    document.getElementById('certificate-classroom').scrollIntoView({ behavior: "smooth" });
-};
-
-window.closeClassroom = () => {
-    if (player) {
-        player.destroy();
-        player = null;
-    }
-    clearInterval(progressInterval);
-    document.getElementById('certificate-classroom').style.display = 'none';
-    document.getElementById('webinar-list-grid').style.display = 'grid';
-};
-
-function initPlayer(videoId) {
-    if (player) {
-        player.destroy();
-    }
-
-    player = new YT.Player('youtube-player', {
-        height: '100%',
-        width: '100%',
-        videoId: videoId,
-        playerVars: {
-            'autoplay': 1,
-            'modestbranding': 1,
-            'rel': 0,
-            'origin': window.location.origin === 'null' ? undefined : window.location.origin
-        },
-        events: {
-            'onReady': (event) => {
-                document.getElementById('player-loading').style.display = 'none';
-                event.target.playVideo();
-            },
-            'onStateChange': onPlayerStateChange,
-            'onError': (e) => {
-                console.error("YT Player Error:", e.data);
-                let msg = "Video playback error.";
-                if (e.data === 101 || e.data === 150) msg = "This video cannot be embedded. Please contact the host.";
-                showToast(msg, "error");
-                document.getElementById('player-loading').innerHTML = `<span style='color:#ef4444;'>${msg}</span>`;
-            }
-        }
-    });
 }
 
-function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        startTracking();
-    } else {
-        stopTracking();
+window.downloadCertificateImage = (originalNode, title) => {
+    // html2canvas requires the element to be in the DOM and visible.
+    // If originalNode is hidden, we clone it to an off-screen container.
+
+    let nodeToCapture = originalNode;
+    let isCloned = false;
+
+    // Check if node or its parent is hidden
+    if (getComputedStyle(originalNode).display === 'none' || originalNode.offsetParent === null) {
+        // Clone and put off-screen
+        const clone = originalNode.cloneNode(true);
+        clone.id = 'temp-cert-clone';
+        clone.style.display = 'flex'; // Ensure flex layout works
+        clone.style.position = 'absolute';
+        clone.style.top = '-9999px';
+        clone.style.left = '-9999px';
+        // HTML2Canvas needs a width/height
+        clone.style.width = '800px';
+        clone.style.height = '560px';
+
+        document.body.appendChild(clone);
+        nodeToCapture = clone;
+        isCloned = true;
     }
-}
 
-function startTracking() {
-    progressInterval = setInterval(() => {
-        if (player && player.getDuration) {
-            const duration = player.getDuration();
-            const currentTime = player.getCurrentTime();
-            if (duration > 0) {
-                const percentage = (currentTime / duration) * 100;
-                updateProgressUI(percentage);
+    showToast("Generating PDF...", "info");
 
-                if (percentage >= REQUIRED_PERCENTAGE && !isUnlocked) {
-                    unlockCertificate();
+    // Wait briefly for styles/fonts
+    setTimeout(() => {
+        html2canvas(nodeToCapture, {
+            useCORS: true,
+            allowTaint: true,
+            scale: 2,
+            backgroundColor: '#ffffff',
+            logging: false
+        }).then(canvas => {
+            canvas.toBlob(blob => {
+                if (blob) {
+                    window.saveAs(blob, `${title}_Certificate.png`);
+                    if (isCloned) document.body.removeChild(nodeToCapture);
+                    showToast("Download started!", "success");
+                } else {
+                    showToast("Error creating image blob.", "error");
+                    if (isCloned) document.body.removeChild(nodeToCapture);
                 }
-            }
-        }
-    }, 1000);
-}
-
-function stopTracking() {
-    clearInterval(progressInterval);
-}
-
-function updateProgressUI(percentage) {
-    const capped = Math.min(Math.round(percentage), 100);
-    document.getElementById('progressText').innerText = `Progress: ${capped}%`;
-    document.getElementById('progressBar').style.width = `${capped}%`;
-}
+            });
+        }).catch(err => {
+            console.error("Certificate Gen Error:", err);
+            showToast("Failed to generate certificate.", "error");
+            if (isCloned) document.body.removeChild(nodeToCapture);
+        });
+    }, 500);
+};
 
 async function unlockCertificate() {
     isUnlocked = true;
@@ -302,7 +334,7 @@ async function unlockCertificate() {
 async function sendEmailWithId(email, name, course, id) {
     if (!email) return;
     try {
-        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CERT_TEMPLATE_ID, {
             to_email: email,
             user_name: name,
             course_name: course,
@@ -352,32 +384,8 @@ async function searchCertificateById(id) {
 
 window.downloadCertificate = () => {
     const node = document.getElementById('certificate-template');
-
-    // Scale for high quality
-    const scale = 2;
-    const style = {
-        transform: 'scale(' + scale + ')',
-        transformOrigin: 'top left',
-        width: node.offsetWidth + 'px',
-        height: node.offsetHeight + 'px'
-    };
-
-    const param = {
-        height: node.offsetHeight * scale,
-        width: node.offsetWidth * scale,
-        quality: 1,
-        style: style
-    };
-
-    domtoimage.toBlob(node, param)
-        .then(function (blob) {
-            const fileName = `${currentWebinar.title.replace(/\s+/g, '_')}_Certificate.png`;
-            window.saveAs(blob, fileName);
-        })
-        .catch(function (error) {
-            console.error('Error generating certificate:', error);
-            showToast("Error generating certificate image.");
-        });
+    const title = currentWebinar ? currentWebinar.title : "Certificate";
+    window.downloadCertificateImage(node, title.replace(/\s+/g, '_'));
 };
 
 function extractYouTubeID(url) {

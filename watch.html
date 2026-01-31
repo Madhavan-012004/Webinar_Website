@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Session | NexStream</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .player-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cinema Mode Player */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+            background: black;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .session-info {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+        }
+
+        .main-details h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .host-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .session-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="webinars.html" class="nav-link">Explore</a>
+            </nav>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <main class="player-container">
+        <!-- Video Player -->
+        <div class="video-wrapper" id="video-embed">
+            <div
+                style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--text-muted); flex-direction:column;">
+                <i class="fas fa-spinner fa-spin" style="font-size:3rem; margin-bottom:15px;"></i>
+                <p>Loading Stream...</p>
+            </div>
+        </div>
+
+        <div class="session-info">
+            <div class="main-details">
+                <h1 id="v-title">Loading Title...</h1>
+                <div style="display:flex; gap:20px; color:var(--text-muted); margin-bottom:20px; font-size:0.9rem;">
+                    <span id="v-date"><i class="far fa-calendar"></i> ...</span>
+                    <span id="v-time"><i class="far fa-clock"></i> ...</span>
+                </div>
+                <!-- Description could go here -->
+                <div class="badge-pill" style="margin-top:10px;">Enrolled Session</div>
+            </div>
+
+            <div class="host-details">
+                <div class="host-card">
+                    <h4 style="color:var(--text-muted); margin-bottom:15px;">Host</h4>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div class="profile-avatar" id="v-host-avatar"
+                            style="width:50px; height:50px; font-size:1.5rem;">H</div>
+                        <div>
+                            <h3 id="v-host-name">Host Name</h3>
+                            <span style="font-size:0.8rem; color:var(--accent);">Verified Instructor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-box"></div>
+    <script type="module" src="js/watch.js"></script>
+</body>
+
+</html>
