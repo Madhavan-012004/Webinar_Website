@@ -146,9 +146,9 @@ function renderWebinars() {
         }
 
         const buttonHtml = isRegistered
-            ? `<button class="btn btn-primary" style="padding:6px 15px; font-size:0.8rem; background: #10b981; border-color: #10b981; cursor: default;" disabled>
-                 <i class="fas fa-check"></i> Registered
-               </button>`
+            ? `<a href="watch.html?id=${docSnap.id}" class="btn btn-primary" style="padding:6px 15px; font-size:0.8rem; background: #ef4444; border-color: #ef4444; text-decoration:none;">
+                 <i class="fas fa-play"></i> Watch Session
+               </a>`
             : `<button class="btn btn-outline btn-register" style="padding:6px 15px; font-size:0.8rem;" 
                  data-id="${docSnap.id}" data-title="${d.title.replace(/"/g, '&quot;')}">
                  Register

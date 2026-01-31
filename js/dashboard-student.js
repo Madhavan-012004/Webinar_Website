@@ -69,8 +69,8 @@ async function loadRegistrations() {
             let actionBtn = `<button class="btn btn-outline" style="width:100%; opacity:0.5; cursor:not-allowed;">Not Started Yet</button>`;
 
             if (w.youtubeUrl) {
-                // Check for live link
-                actionBtn = `<a href="${w.youtubeUrl}" target="_blank" class="btn btn-primary" style="width:100%; display:block; text-align:center;">
+                // Link to internal player
+                actionBtn = `<a href="watch.html?id=${w.id}" class="btn btn-primary" style="width:100%; display:block; text-align:center; text-decoration:none;">
                     <i class="fas fa-play-circle"></i> Join Now
                 </a>`;
             }

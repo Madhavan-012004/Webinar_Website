@@ -98,10 +98,9 @@ function initRegisteredWebinars(user) {
             }
 
             const buttonHtml = videoId
-                ? `<button class="btn btn-primary" style="width:100%; margin-top:10px;" 
-                     onclick="playVideo('${containerId}', '${videoId}')">
-                     <i class="fas fa-play-circle"></i> Watch Live / Recording
-                   </button>`
+                ? `<a href="watch.html?id=${d.id}" class="btn btn-primary" style="width:100%; margin-top:10px; display:block; text-align:center; text-decoration:none;">
+                     <i class="fas fa-play-circle"></i> Watch Session
+                   </a>`
                 : `<button class="btn btn-secondary" style="width:100%; margin-top:10px;" disabled>
                      <i class="fas fa-clock"></i> Stream Not Available
                    </button>`;
