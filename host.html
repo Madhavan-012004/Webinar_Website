@@ -197,12 +197,7 @@
                     <p style="color: var(--text-muted);">Loading your sessions...</p>
                 </div>
             </div>
-        </div> colspan="5" style="text-align:center; padding: 30px; color: var(--text-muted);">
-        <i class="fas fa-spinner fa-spin"></i> Loading your sessions...
-        </td>
-        </tr>
-        </tbody>
-        </table>
+        </div>
     </main>
 
     <div class="modal-overlay" id="create-modal">
@@ -228,6 +223,19 @@
                         <input type="time" id="w-time" required
                             style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px;">
                     </div>
+                </div>
+
+                <div class="input-group">
+                    <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Webinar Category</label>
+                    <select id="w-category" required
+                        style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px; option { background: #1e293b; }">
+                        <option value="Technology">Technology</option>
+                        <option value="Design">Design</option>
+                        <option value="Business">Business</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Science">Science</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
@@ -262,6 +270,30 @@
             if (e.target == modal) modal.style.display = 'none';
         }
     </script>
+
+    <footer class="main-footer">
+        <div class="container footer-layout">
+            <div class="footer-brand">
+                <h3>NexStream</h3>
+                <p>Empowering the world to teach and learn online.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <a href="webinars.html">Browse</a>
+                <a href="host.html">Host Studio</a>
+                <a href="certificate.html">Verify Certificate</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="about.html">About Us</a>
+                <a href="requests.html">Help Center</a>
+                <a href="login.html">Login / Sign Up</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 NexStream Inc. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script type="module" src="js/dashboard-host.js"></script>
 </body>

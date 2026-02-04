@@ -4,7 +4,7 @@
 import { checkAuthRequirement } from './auth-guard.js';
 import { db, auth } from './config.js';
 import { initMobileMenu, extractYouTubeID } from './utils.js';
-import { getDoc, doc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getDoc, doc, collection, query, orderBy, limit, getDocs, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -14,7 +14,83 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Mobile Menu
     initMobileMenu();
 
-    // Load Featured Content
+    // Search Functionality
+    const searchBtn = document.getElementById('hero-search-btn');
+    const searchInput = document.getElementById('hero-search-input');
+    const resultsPanel = document.getElementById('search-results-floating');
+
+    if (searchInput && resultsPanel) {
+        let webinars = [];
+
+        // Fetch approved webinars for live search
+        const fetchWebinars = async () => {
+            try {
+                const q = query(collection(db, "webinars"), where("status", "==", "approved"));
+                const snap = await getDocs(q);
+                webinars = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            } catch (e) {
+                console.error("Error fetching webinars for search", e);
+            }
+        };
+        fetchWebinars();
+
+        searchInput.addEventListener('input', () => {
+            const queryText = searchInput.value.trim().toLowerCase();
+            if (queryText.length > 0) {
+                const filtered = webinars.filter(w =>
+                    w.title.toLowerCase().includes(queryText) ||
+                    (w.hostName && w.hostName.toLowerCase().includes(queryText))
+                ).slice(0, 5); // Limit to 5 results
+
+                renderResults(filtered);
+                resultsPanel.classList.remove('hidden');
+            } else {
+                resultsPanel.classList.add('hidden');
+            }
+        });
+
+        const renderResults = (results) => {
+            if (results.length === 0) {
+                resultsPanel.innerHTML = '<div class="no-results">No matches found</div>';
+                return;
+            }
+
+            resultsPanel.innerHTML = results.map(w => {
+                const videoId = extractYouTubeID(w.youtubeUrl);
+                const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'https://via.placeholder.com/60x40';
+                return `
+                    <div class="search-result-item" onclick="window.location.href='watch.html?id=${w.id}'">
+                        <img src="${thumb}" class="result-thumb">
+                        <div class="result-info">
+                            <h5>${w.title}</h5>
+                            <span>${w.hostName || 'NexStream Host'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        // Close results on outside click
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !resultsPanel.contains(e.target)) {
+                resultsPanel.classList.add('hidden');
+            }
+        });
+
+        // Search Button click still redirects to Explore with query
+        const performSearch = () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `webinars.html?search=${encodeURIComponent(query)}`;
+            }
+        };
+        if (searchBtn) searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+    }
+
+    // Dynamic Hero Stats (Animation)tent
     loadFeaturedWebinar();
 });
 

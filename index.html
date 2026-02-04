@@ -31,8 +31,6 @@
             </nav>
 
             <div class="auth-buttons" id="auth-container">
-                <a href="login.html" class="btn btn-text">Log In</a>
-                <a href="login.html?mode=signup" class="btn btn-primary">Sign Up Free</a>
             </div>
 
             <div class="mobile-toggle">
@@ -49,10 +47,16 @@
                 <p>The all-in-one ecosystem for interactive live learning. Hosts can monetize expertise, Admins ensure
                     quality, and Learners earn verified certificates.</p>
 
-                <div class="hero-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Find a topic (e.g. React, Business, AI)...">
-                    <button>Search</button>
+                <div class="hero-search-wrapper">
+                    <div class="hero-search">
+                        <div class="search-icon-box">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <input type="text" id="hero-search-input"
+                            placeholder="Find a topic (e.g. React, Business, AI)..." autocomplete="off">
+                        <button id="hero-search-btn">Search</button>
+                    </div>
+                    <div id="search-results-floating" class="search-results-floating hidden"></div>
                 </div>
 
                 <div class="cta-group">

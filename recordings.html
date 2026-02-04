@@ -25,18 +25,24 @@
         </div>
     </header>
 
-    <main class="container" style="padding: 60px 20px;">
-        <div class="section-title">
-            <h2>Recorded Sessions</h2>
-            <p>Access your past learning materials and re-watch sessions anytime.</p>
-        </div>
-
-        <div class="webinar-grid" id="recordings-grid">
-            <!-- Loaded via JS -->
-            <div style="grid-column:1/-1; text-align:center; padding:50px; color:var(--text-muted);">
-                <i class="fas fa-spinner fa-spin"></i> Loading Archive...
+    <main class="recordings-page">
+        <section class="archive-hero">
+            <div class="container">
+                <div class="badge-pill"><i class="fas fa-history"></i> Learning Archive</div>
+                <h1>Your <span class="gradient-text">Recordings.</span></h1>
+                <p>Access your past learning materials and re-watch sessions anytime to reinforce your knowledge.</p>
             </div>
-        </div>
+        </section>
+
+        <section class="container" style="padding-bottom: 80px;">
+            <div class="webinar-grid" id="recordings-grid">
+                <!-- Loaded via JS -->
+                <div style="grid-column:1/-1; text-align:center; padding:100px; color:var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top:15px;">Accessing secure archive...</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="toast-box"></div>

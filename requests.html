@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Center | NexStream</title>
+    <title>Support & Host Application | NexStream</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         /* PAGE SPECIFIC STYLES: SUPPORT */
@@ -95,6 +97,16 @@
             gap: 20px;
         }
 
+        /* Host Promo */
+        .host-promo {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid var(--primary);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
         @media (max-width: 900px) {
             .support-layout {
                 grid-template-columns: 1fr;
@@ -118,7 +130,6 @@
                     Panel</a>
             </nav>
             <div class="auth-buttons" id="auth-container">
-                <a href="login.html" class="btn btn-text">Log In</a>
             </div>
             <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
         </div>
@@ -129,7 +140,7 @@
         <section style="text-align: center; padding-top: 60px;">
             <div class="badge"
                 style="background: rgba(79, 70, 229, 0.1); color: var(--accent); padding: 5px 15px; border-radius: 20px; margin-bottom: 20px; display: inline-block;">
-                <i class="fas fa-headset"></i> 24/7 Help Center
+                <i class="fas fa-headset"></i> Support & Host Application
             </div>
             <h1>How can we <span class="gradient-text">help you?</span></h1>
         </section>
@@ -137,19 +148,24 @@
         <div class="support-layout">
 
             <div class="info-side">
+
+                <div class="host-promo">
+                    <i class="fas fa-microphone-alt"
+                        style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px;">Become a Host</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">
+                        Share your knowledge, earn money, and build a global audience. Apply now using the form!
+                    </p>
+                    <button class="btn btn-primary" onclick="selectHostApp()"
+                        style="padding: 8px 20px; font-size: 0.9rem;">Apply Now</button>
+                </div>
+
                 <div class="contact-cards">
                     <div class="c-card">
                         <i class="fas fa-envelope-open-text"></i>
                         <div>
                             <h4 style="margin:0;">Email Support</h4>
                             <span style="color:var(--text-muted); font-size:0.9rem;">help@nexstream.com</span>
-                        </div>
-                    </div>
-                    <div class="c-card">
-                        <i class="fab fa-discord"></i>
-                        <div>
-                            <h4 style="margin:0;">Community</h4>
-                            <span style="color:var(--text-muted); font-size:0.9rem;">Join Discord Server</span>
                         </div>
                     </div>
                 </div>
@@ -162,8 +178,8 @@
                             How do I become a Host? <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            Simply sign up and select "Host" as your role. If you already have an account, you can
-                            request an upgrade via this support form.
+                            Select "Host Application" in the support form. Fill in your details and we will review your
+                            profile within 24 hours.
                         </div>
                     </div>
 
@@ -207,39 +223,44 @@
                         <p style="color: var(--text-muted);">We usually respond within 2 hours.</p>
                     </div>
 
-                    <form onsubmit="event.preventDefault(); alert('Ticket Submitted! We will contact you shortly.');">
+                    <form id="supportForm">
                         <div class="form-row">
                             <div class="input-group">
                                 <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Your
                                     Name</label>
-                                <input type="text" placeholder="John Doe" required>
+                                <input type="text" id="s-name" placeholder="John Doe" required>
                             </div>
                             <div class="input-group">
                                 <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Email
                                     Address</label>
-                                <input type="email" placeholder="john@example.com" required>
+                                <input type="email" id="s-email" placeholder="john@example.com" required>
                             </div>
                         </div>
 
                         <div class="input-group">
-                            <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Department</label>
-                            <select
+                            <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Department /
+                                Subject</label>
+                            <select id="s-dept"
                                 style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:8px; color:white; outline:none;">
-                                <option>Technical Support</option>
-                                <option>Billing & Refunds</option>
-                                <option>Feature Request</option>
-                                <option>Report a Host</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing & Refunds</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="report">Report a Host</option>
+                                <option value="host_application" style="color: var(--secondary); font-weight: bold;">
+                                    Apply as Host</option>
                             </select>
                         </div>
 
                         <div class="input-group">
-                            <label
-                                style="display:block; margin-bottom:8px; color:var(--text-muted);">Description</label>
-                            <textarea rows="5" placeholder="Describe your issue..." required
+                            <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Message /
+                                Application Details</label>
+                            <textarea id="s-message" rows="5"
+                                placeholder="Describe your issue or tell us why you want to be a host..." required
                                 style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:8px; color:white; outline:none;"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">
+                        <button type="submit" id="submitBtn" class="btn btn-primary"
+                            style="width: 100%; margin-top: 20px;">
                             Submit Ticket <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
@@ -254,11 +275,68 @@
         <p>&copy; 2026 NexStream. We are here to help.</p>
     </footer>
 
+    <div id="toast-box"></div>
+
     <script>
         function toggleFaq(element) {
             const item = element.parentElement;
             item.classList.toggle('active');
         }
+
+        function selectHostApp() {
+            const select = document.getElementById('s-dept');
+            if (select) {
+                select.value = 'host_application';
+                document.querySelector('.form-side').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('s-message').placeholder = "Please tell us about your expertise and previous experience...";
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { showToast } from './js/utils.js';
+        import { initEmailJS, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID } from './js/config.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initEmailJS();
+
+            const form = document.getElementById('supportForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const btn = document.getElementById('submitBtn');
+                const orgText = btn.innerHTML;
+
+                const name = document.getElementById('s-name').value;
+                const email = document.getElementById('s-email').value;
+                const dept = document.getElementById('s-dept').value;
+                const message = document.getElementById('s-message').value;
+
+                btn.innerText = "Sending...";
+                btn.disabled = true;
+
+                // Send via EmailJS
+                try {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                        from_name: name,
+                        from_email: email,
+                        category: dept,
+                        message: message,
+                        to_name: "NexStream Admin"
+                    });
+
+                    showToast(dept === 'host_application' ? "Application Submitted! Check your email." : "Ticket Submitted! We will contact you.", "success");
+                    form.reset();
+
+                } catch (err) {
+                    console.error("EmailJS Error:", err);
+                    showToast("Failed to send. Please try again.", "error");
+                } finally {
+                    btn.innerHTML = orgText;
+                    btn.disabled = false;
+                }
+            });
+        });
     </script>
 
     <script type="module" src="js/index.js"></script>

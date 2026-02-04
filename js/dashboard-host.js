@@ -96,6 +96,7 @@ async function loadHostDashboard() {
                         ${mediaPreview}
                         <h4 style="font-size:1.1rem; margin-bottom:10px; color:white;">${d.title}</h4>
                         <div style="font-size:0.9rem; color:var(--text-muted); display:flex; flex-direction:column; gap:8px;">
+                            <span style="color:var(--accent); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; font-weight:bold;">${d.category || 'General'}</span>
                             <span><i class="far fa-calendar"></i> ${d.date} at ${d.time}</span>
                             <span><i class="fas fa-tag"></i> ${d.price > 0 ? '$' + d.price : 'Free'}</span>
                             ${d.youtubeUrl ? `<span style="color:#ef4444;"><i class="fab fa-youtube"></i> Linked</span>` : ''}
@@ -117,6 +118,7 @@ async function handleHostRequest(e) {
     if (!currentUser) return showToast("Login required", "error");
 
     const title = document.getElementById('w-title').value;
+    const category = document.getElementById('w-category').value;
     const date = document.getElementById('w-date').value;
     const time = document.getElementById('w-time').value;
     const price = document.getElementById('w-price').value;
@@ -133,7 +135,7 @@ async function handleHostRequest(e) {
         // --------------------------------------
 
         await addDoc(collection(db, "webinars"), {
-            title, date, time, price,
+            title, category, date, time, price,
             youtubeUrl, // New Field
             hostId: currentUser.uid,
             hostName: currentUser.displayName || "Host",

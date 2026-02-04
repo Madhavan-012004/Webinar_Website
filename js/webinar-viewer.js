@@ -75,6 +75,14 @@ function initFilters() {
     // Search
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
+        // Check URL Params
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        if (searchQuery) {
+            searchInput.value = searchQuery;
+            currentSearch = searchQuery.toLowerCase();
+        }
+
         searchInput.addEventListener('input', (e) => {
             currentSearch = e.target.value.toLowerCase();
             renderWebinars();

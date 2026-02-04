@@ -136,7 +136,7 @@ window.playVideo = (containerId, videoId) => {
     if (!container) return;
 
     container.innerHTML = `
-        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
         allowfullscreen></iframe>
     `;

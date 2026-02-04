@@ -303,7 +303,7 @@ function renderWatchPage(data) {
     if (videoId) {
         embedContainer.innerHTML = `
             <iframe 
-                src="https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1" 
+                src="https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0" 
                 title="${data.title}"
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 

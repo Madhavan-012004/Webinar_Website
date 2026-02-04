@@ -140,24 +140,80 @@ export function initMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
 
     if (mobileToggle && navMenu) {
-        // Clone to remove old listeners if any
+        // Clone to remove old listeners
         const newToggle = mobileToggle.cloneNode(true);
         mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
 
         newToggle.addEventListener('click', () => {
             const isFlex = navMenu.style.display === 'flex';
-            navMenu.style.display = isFlex ? 'none' : 'flex';
 
-            if (!isFlex) {
+            if (isFlex) {
+                navMenu.style.display = 'none';
+                // Remove auth buttons from mobile menu if they were added
+                const mobileAuth = navMenu.querySelector('.mobile-auth-container');
+                if (mobileAuth) mobileAuth.remove();
+            } else {
+                navMenu.style.display = 'flex';
                 navMenu.style.flexDirection = 'column';
                 navMenu.style.position = 'absolute';
-                navMenu.style.top = '100%';
+                navMenu.style.top = '80px'; // Below header
                 navMenu.style.left = '0';
                 navMenu.style.width = '100%';
-                navMenu.style.background = 'rgba(15, 23, 42, 0.95)';
-                navMenu.style.padding = '20px';
+                navMenu.style.height = 'calc(100vh - 80px)'; // Full height
+                navMenu.style.background = 'rgba(2, 6, 23, 0.98)';
+                navMenu.style.padding = '40px 20px';
                 navMenu.style.backdropFilter = 'blur(10px)';
                 navMenu.style.zIndex = '999';
+                navMenu.style.gap = '20px';
+                navMenu.style.alignItems = 'center';
+
+                // Add Auth Buttons to Mobile Menu
+                const authContainer = document.getElementById('auth-container');
+                if (authContainer && !navMenu.querySelector('.mobile-auth-container')) {
+                    const authClone = authContainer.cloneNode(true);
+                    authClone.id = '';
+                    authClone.className = 'mobile-auth-container';
+                    authClone.style.display = 'flex';
+                    authClone.style.flexDirection = 'column';
+                    authClone.style.gap = '15px';
+                    authClone.style.marginTop = '20px';
+                    authClone.style.width = '100%';
+
+                    // Fix buttons in clone
+                    const btns = authClone.querySelectorAll('.btn');
+                    btns.forEach(b => {
+                        b.style.width = '100%';
+                        b.style.justifyContent = 'center';
+                    });
+
+                    // Fix Profile Dropdown logic in clone (it won't work easily, so simplified)
+                    // If logged in, Show "My Profile" + "Logout" links instead of Dropdown
+                    if (authClone.querySelector('.profile-trigger')) {
+                        authClone.innerHTML = `
+                            <hr style="width:100%; border:0; border-top:1px solid rgba(255,255,255,0.1); margin:10px 0;">
+                            <a href="profile.html" class="nav-link" style="color:white;"><i class="fas fa-user-circle"></i> My Profile</a>
+                            <a href="registered.html" class="nav-link" style="color:white;"><i class="fas fa-calendar-alt"></i> My Schedule</a>
+                            <a href="recordings.html" class="nav-link" style="color:white;"><i class="fas fa-play-circle"></i> My Recordings</a>
+                            ${authContainer.innerHTML.includes('host.html') ? '<a href="host.html" class="nav-link" style="color:white;"><i class="fas fa-microphone-alt"></i> Creator Studio</a>' : ''}
+                            ${authContainer.innerHTML.includes('admin.html') ? '<a href="admin.html" class="nav-link" style="color:white;"><i class="fas fa-shield-alt"></i> Admin Panel</a>' : ''}
+                            <a href="requests.html" class="nav-link" style="color:white;"><i class="fas fa-headset"></i> Support</a>
+                            <a href="#" id="mobileLogout" class="nav-link" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        `;
+
+                        // Re-attach logout listener
+                        setTimeout(() => {
+                            const mbLogout = navMenu.querySelector('#mobileLogout');
+                            if (mbLogout) {
+                                mbLogout.addEventListener('click', async () => {
+                                    await signOut(auth);
+                                    window.location.reload();
+                                });
+                            }
+                        }, 100);
+                    }
+
+                    navMenu.appendChild(authClone);
+                }
             }
         });
     }

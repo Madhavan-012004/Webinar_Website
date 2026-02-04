@@ -59,19 +59,24 @@ async function loadRecordings(user) {
 
         // 4. Render
         grid.innerHTML = recordings.map(w => `
-            <div class="webinar-card">
+            <div class="webinar-card" onclick="window.location.href='watch.html?id=${w.id}'">
                 <div class="thumb">
                     <img src="https://img.youtube.com/vi/${extractYouTubeID(w.youtubeUrl) || ''}/mqdefault.jpg" onerror="this.src='https://via.placeholder.com/300x180?text=No+Preview'">
-                    <div class="tag" style="background:var(--secondary);">RECORDED</div>
+                    <div class="card-tag tag-recorded">RECORDED</div>
                 </div>
                 <div class="details">
-                    <h3 style="font-size:1.1rem; margin-bottom:10px;">${w.title}</h3>
-                    <div class="meta">
-                         <span><i class="far fa-calendar"></i> ${formatDate(w.date)}</span>
+                     <div style="display:flex; justify-content:space-between; color:var(--text-muted); font-size:0.8rem; margin-bottom:10px;">
+                        <span><i class="far fa-calendar"></i> ${formatDate(w.date)}</span>
+                        <span><i class="far fa-clock"></i> ${w.time}</span>
                     </div>
-                    <a href="watch.html?id=${w.id}" class="btn-card">
+                    <h3 style="font-size:1.15rem; margin-bottom:15px; color:white;">${w.title}</h3>
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                         <div style="width:28px; height:28px; background:var(--primary); border-radius:50%; display:flex; justify-content:center; align-items:center; color:white; font-size:11px; font-weight:bold;">${(w.hostName || 'H').charAt(0)}</div>
+                         <span style="color:var(--text-muted); font-size:0.85rem;">${w.hostName || 'Host'}</span>
+                    </div>
+                    <button class="btn-card">
                         <i class="fas fa-play"></i> Watch Recording
-                    </a>
+                    </button>
                 </div>
             </div>
         `).join('');
