@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexStream | The Future of Live Learning</title>
+    <title>MAD Academy | Learn • Code • Compete • Teach</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
         rel="stylesheet">
@@ -17,7 +17,7 @@
     <header class="navbar">
         <div class="container nav-container">
             <a href="index.html" class="brand-logo">
-                <i class="fas fa-bolt"></i> Nex<span>Stream</span>
+                <i class="fas fa-bolt"></i> MAD<span>Academy</span>
             </a>
 
             <nav class="nav-menu">
@@ -25,6 +25,7 @@
                 <a href="webinars.html" class="nav-link">Explore</a>
                 <a href="compete.html" class="nav-link">Compete</a>
                 <a href="certificate.html" class="nav-link">Certificates</a>
+                <a href="about.html" class="nav-link">About</a>
 
                 <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
                     Panel</a>
@@ -42,18 +43,20 @@
     <section class="hero-section">
         <div class="container hero-content">
             <div class="hero-text">
-                <div class="badge-pill"><i class="fas fa-star"></i> #1 Platform for Verified Learning</div>
-                <h1>Unlock Potential. <br> <span class="gradient-text">Stream Knowledge.</span></h1>
-                <p>The all-in-one ecosystem for interactive live learning. Hosts can monetize expertise, Admins ensure
-                    quality, and Learners earn verified certificates.</p>
+                <div class="badge-pill"><i class="fas fa-star"></i> Learn • Code • Compete • Teach</div>
+                <h1>Ideas That Educate. <br> <span class="gradient-text">Sessions That Inspire.</span></h1>
+                <p>The all-in-one learning platform — access structured courses, interactive live classes & webinars,
+                    and
+                    exciting coding contests. Grow your skills, earn certificates, and join a global learning community.
+                </p>
 
                 <div class="hero-search-wrapper">
                     <div class="hero-search">
                         <div class="search-icon-box">
                             <i class="fas fa-search"></i>
                         </div>
-                        <input type="text" id="hero-search-input"
-                            placeholder="Find a topic (e.g. React, Business, AI)..." autocomplete="off">
+                        <input type="text" id="hero-search-input" placeholder="Search courses, classes, or contests…"
+                            autocomplete="off">
                         <button id="hero-search-btn">Search</button>
                     </div>
                     <div id="search-results-floating" class="search-results-floating hidden"></div>
@@ -61,10 +64,10 @@
 
                 <div class="cta-group">
                     <a href="webinars.html" class="btn btn-primary">
-                        <i class="fas fa-rocket"></i> Start Learning
+                        <i class="fas fa-rocket"></i> Explore Courses
                     </a>
                     <a href="host.html" class="btn btn-outline">
-                        <i class="fas fa-microphone-alt"></i> Become a Host
+                        <i class="fas fa-microphone-alt"></i> Host a Live Class
                     </a>
                 </div>
             </div>
@@ -110,55 +113,81 @@
                 <p>One platform, multiple possibilities.</p>
             </div>
 
-            <div class="split-features">
+            <div class="split-features" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
                 <div class="role-card learner-side">
                     <div class="role-icon"><i class="fas fa-user-graduate"></i></div>
-                    <h3>For Learners</h3>
+                    <h3>Learners</h3>
                     <ul class="feature-list">
-                        <li><i class="fas fa-check-circle"></i> <strong>Live Interaction:</strong> Q&A and Polls.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Verified Proof:</strong> Auto-generated
-                            Certificates.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Reminders:</strong> Never miss a session.</li>
+                        <li><i class="fas fa-check-circle"></i> Structured courses in Emerging technologies.</li>
+                        <li><i class="fas fa-check-circle"></i> Interactive live classes with Q&A.</li>
+                        <li><i class="fas fa-check-circle"></i> Earn verified certificates.</li>
                     </ul>
                     <a href="webinars.html" class="link-arrow">Browse Catalog <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <div class="role-card host-side">
                     <div class="role-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    <h3>For Hosts</h3>
+                    <h3>Hosts</h3>
                     <ul class="feature-list">
-                        <li><i class="fas fa-check-circle"></i> <strong>Global Reach:</strong> Stream to thousands.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Analytics:</strong> Track attendance.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Monetization:</strong> Paid or free tickets.
-                        </li>
+                        <li><i class="fas fa-check-circle"></i> Conduct live classes and webinars.</li>
+                        <li><i class="fas fa-check-circle"></i> Create structured learning programs.</li>
+                        <li><i class="fas fa-check-circle"></i> Engage with motivated learners.</li>
                     </ul>
                     <a href="host.html" class="link-arrow">Start Streaming <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="role-card"
+                    style="background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6)); border: 1px solid var(--border); padding: 50px; border-radius: 30px; transition: var(--transition); position: relative; overflow: hidden;">
+                    <div class="role-icon"><i class="fas fa-code"></i></div>
+                    <h3>Coders & Competitors</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Join regular coding contests.</li>
+                        <li><i class="fas fa-check-circle"></i> Earn badges & certificates.</li>
+                        <li><i class="fas fa-check-circle"></i> Compete on leaderboards.</li>
+                    </ul>
+                    <a href="compete.html" class="link-arrow">Start Competing <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
     <footer class="main-footer">
-        <div class="container footer-layout">
-            <div class="footer-brand">
-                <h3>NexStream</h3>
-                <p>Empowering the world to teach and learn online.</p>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> MAD<span>Academy</span></a>
+                    <p>MAD Academy combines the power of learning, teaching, and practical application through
+                        real courses, interactive live classes, and competitive challenges — all in one place.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-col">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="webinars.html">Browse Catalog</a></li>
+                            <li><a href="host.html">Host Studio</a></li>
+                            <li><a href="certificate.html">Verify Certificate</a></li>
+                            <li><a href="compete.html">Competitions</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="requests.html">Help Center</a></li>
+                            <li><a href="login.html">Login / Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Platform</h4>
-                <a href="webinars.html">Browse</a>
-                <a href="host.html">Host Studio</a>
-                <a href="certificate.html">Verify Certificate</a>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MAD Academy. All rights reserved. Crafted for excellence.</p>
             </div>
-            <div class="footer-col">
-                <h4>Support</h4>
-                <a href="about.html">About Us</a>
-                <a href="requests.html">Help Center</a>
-                <a href="login.html">Login / Sign Up</a>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2026 NexStream Inc. All rights reserved.</p>
         </div>
     </footer>
 

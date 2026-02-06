@@ -4,127 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support & Host Application | NexStream</title>
+    <title>Support & Host Application | MAD Academy</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-    <style>
-        /* PAGE SPECIFIC STYLES: SUPPORT */
-
-        .support-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 50px;
-            padding: 60px 0;
-        }
-
-        /* FAQ Section */
-        .faq-item {
-            background: var(--bg-card);
-            border: var(--border);
-            border-radius: 8px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .faq-question:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 20px;
-            color: var(--text-muted);
-            transition: 0.3s ease;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 200px;
-            padding: 20px;
-            border-top: var(--border);
-        }
-
-        .faq-item.active .faq-question i {
-            transform: rotate(180deg);
-            color: var(--primary);
-        }
-
-        /* Contact Cards */
-        .c-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 10px;
-            border: var(--border);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .c-card i {
-            font-size: 1.5rem;
-            color: var(--secondary);
-        }
-
-        /* Form Box */
-        .form-box {
-            background: var(--bg-card);
-            padding: 40px;
-            border-radius: 20px;
-            border: var(--border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        /* Host Promo */
-        .host-promo {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
-            border: 1px solid var(--primary);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        @media (max-width: 900px) {
-            .support-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
     <header class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> Nex<span>Stream</span></a>
+            <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> MAD<span>Academy</span></a>
             <nav class="nav-menu">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="webinars.html" class="nav-link">Explore</a>
                 <a href="compete.html" class="nav-link">Compete</a>
                 <a href="certificate.html" class="nav-link">Certificates</a>
+                <a href="about.html" class="nav-link">About</a>
 
                 <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
                     Panel</a>
@@ -135,211 +34,123 @@
         </div>
     </header>
 
-    <main class="container">
+    <main class="container main-content">
 
-        <section style="text-align: center; padding-top: 60px;">
+        <section class="head-section" style="text-align: center; margin-bottom: 50px;">
             <div class="badge"
-                style="background: rgba(79, 70, 229, 0.1); color: var(--accent); padding: 5px 15px; border-radius: 20px; margin-bottom: 20px; display: inline-block;">
-                <i class="fas fa-headset"></i> Support & Host Application
+                style="background: rgba(79, 70, 229, 0.1); color: var(--accent); padding: 6px 16px; border-radius: 30px; margin-bottom: 20px; display: inline-block; border: 1px solid rgba(79, 70, 229, 0.3);">
+                <i class="fas fa-headset"></i> Support Center
             </div>
-            <h1>How can we <span class="gradient-text">help you?</span></h1>
+            <h1 class="gradient-text" style="font-size: 3rem; margin-bottom: 15px;">How can we help?</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                Find answers, request new sessions, or join our team of instructors.
+            </p>
         </section>
 
         <div class="support-layout">
 
+            <!-- LEFT SIDE: Actions & Info -->
             <div class="info-side">
 
                 <div class="host-promo">
                     <i class="fas fa-microphone-alt"
-                        style="font-size: 2rem; color: var(--primary); margin-bottom: 15px;"></i>
-                    <h3 style="margin-bottom: 10px;">Become a Host</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">
-                        Share your knowledge, earn money, and build a global audience. Apply now using the form!
+                        style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h3 style="margin-bottom: 10px; color: white;">Become an Instructor</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                        Share your knowledge, earn recognition, and build a global audience. Apply to host a session
+                        today!
                     </p>
-                    <button class="btn btn-primary" onclick="selectHostApp()"
-                        style="padding: 8px 20px; font-size: 0.9rem;">Apply Now</button>
+                    <button class="btn btn-primary" onclick="selectHostApp()" style="width: 100%;">
+                        Start Application
+                    </button>
                 </div>
 
                 <div class="contact-cards">
                     <div class="c-card">
                         <i class="fas fa-envelope-open-text"></i>
                         <div>
-                            <h4 style="margin:0;">Email Support</h4>
-                            <span style="color:var(--text-muted); font-size:0.9rem;">help@nexstream.com</span>
+                            <h4 style="margin:0; color: white;">Email Support</h4>
+                            <span style="color:var(--text-muted); font-size:0.9rem;">help@madacademy.com</span>
+                        </div>
+                    </div>
+                    <div class="c-card">
+                        <i class="fab fa-discord"></i>
+                        <div>
+                            <h4 style="margin:0; color: white;">Community</h4>
+                            <span style="color:var(--text-muted); font-size:0.9rem;">Join our Discord</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="faq-section" style="margin-top: 40px;">
-                    <h3 style="margin-bottom: 20px; color: white;">Common Questions</h3>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            How do I become a Host? <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            Select "Host Application" in the support form. Fill in your details and we will review your
-                            profile within 24 hours.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            Where is my certificate? <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            After a host marks your attendance, a certificate ID is emailed to you. Enter that ID on the
-                            "Certificates" page to download it.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            I forgot my password. <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            Go to the Login page and click "Forgot Password". We will send a secure reset link to your
-                            registered email address.
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFaq(this)">
-                            I can't see the youtube live video? <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            Make sure you are on the explorer page and the host has started the stream and provided a
-                            valid link.
-                        </div>
-                    </div>
-
-                </div>
             </div>
 
-            <div class="form-side">
-                <div class="form-box">
-                    <div class="form-header" style="margin-bottom: 30px;">
-                        <h3 style="font-size: 1.8rem; margin: 0;">Submit a Request</h3>
-                        <p style="color: var(--text-muted);">We usually respond within 2 hours.</p>
+            <!-- RIGHT SIDE: FAQ & Form -->
+            <div class="content-side">
+
+                <!-- FAQ SECTION -->
+                <div class="faq-section" style="margin-bottom: 50px;">
+                    <h3 style="margin-bottom: 25px; color: white; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-question-circle" style="color: var(--accent);"></i> Frequently Asked Questions
+                    </h3>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentNode.classList.toggle('active')">
+                            <span>How do I get my certificate?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Certificates are automatically issued to your account after you complete a verified session.
+                            You can also manually claim them on the 'Certificates' page using your unique session ID.
+                        </div>
                     </div>
 
-                    <form id="supportForm">
-                        <div class="form-row">
-                            <div class="input-group">
-                                <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Your
-                                    Name</label>
-                                <input type="text" id="s-name" placeholder="John Doe" required>
-                            </div>
-                            <div class="input-group">
-                                <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Email
-                                    Address</label>
-                                <input type="email" id="s-email" placeholder="john@example.com" required>
-                            </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentNode.classList.toggle('active')">
+                            <span>Is MAD Academy really free?</span>
+                            <i class="fas fa-chevron-down"></i>
                         </div>
-
-                        <div class="input-group">
-                            <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Department /
-                                Subject</label>
-                            <select id="s-dept"
-                                style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:8px; color:white; outline:none;">
-                                <option value="support">Technical Support</option>
-                                <option value="billing">Billing & Refunds</option>
-                                <option value="feature">Feature Request</option>
-                                <option value="report">Report a Host</option>
-                                <option value="host_application" style="color: var(--secondary); font-weight: bold;">
-                                    Apply as Host</option>
-                            </select>
+                        <div class="faq-answer">
+                            Yes! Our core mission is to democratize education. Most live sessions and competitions are
+                            completely free to join.
                         </div>
+                    </div>
 
-                        <div class="input-group">
-                            <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Message /
-                                Application Details</label>
-                            <textarea id="s-message" rows="5"
-                                placeholder="Describe your issue or tell us why you want to be a host..." required
-                                style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:8px; color:white; outline:none;"></textarea>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="this.parentNode.classList.toggle('active')">
+                            <span>How can I host a session?</span>
+                            <i class="fas fa-chevron-down"></i>
                         </div>
-
-                        <button type="submit" id="submitBtn" class="btn btn-primary"
-                            style="width: 100%; margin-top: 20px;">
-                            Submit Ticket <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
+                        <div class="faq-answer">
+                            Click the "Start Application" button on this page. Once approved by our team, you'll get
+                            access to the Host Studio.
+                        </div>
+                    </div>
                 </div>
+
+                <!-- DYNAMIC FORM CONTAINER -->
+                <div id="dynamic-form-container">
+                    <!-- Form injected by JS -->
+                </div>
+
             </div>
 
         </div>
-    </main>
 
-    <footer
-        style="background: #0b1120; padding: 40px 0; border-top: var(--border); text-align: center; color: var(--text-muted); margin-top: 60px;">
-        <p>&copy; 2026 NexStream. We are here to help.</p>
-    </footer>
+    </main>
 
     <div id="toast-box"></div>
 
+    <script type="module" src="js/requests.js"></script>
     <script>
-        function toggleFaq(element) {
-            const item = element.parentElement;
-            item.classList.toggle('active');
-        }
-
-        function selectHostApp() {
-            const select = document.getElementById('s-dept');
-            if (select) {
-                select.value = 'host_application';
-                document.querySelector('.form-side').scrollIntoView({ behavior: 'smooth' });
-                document.getElementById('s-message').placeholder = "Please tell us about your expertise and previous experience...";
-            }
-        }
+        // Simple internal toggle for FAQ if not handled by external JS yet, 
+        // though style.css handles the .active class transition.
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', event => {
+                const parent = item.parentNode;
+                parent.classList.toggle('active');
+            })
+        })
     </script>
-
-    <script type="module">
-        import { showToast } from './js/utils.js';
-        import { initEmailJS, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID } from './js/config.js';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initEmailJS();
-
-            const form = document.getElementById('supportForm');
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const btn = document.getElementById('submitBtn');
-                const orgText = btn.innerHTML;
-
-                const name = document.getElementById('s-name').value;
-                const email = document.getElementById('s-email').value;
-                const dept = document.getElementById('s-dept').value;
-                const message = document.getElementById('s-message').value;
-
-                btn.innerText = "Sending...";
-                btn.disabled = true;
-
-                // Send via EmailJS
-                try {
-                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                        from_name: name,
-                        from_email: email,
-                        category: dept,
-                        message: message,
-                        to_name: "NexStream Admin"
-                    });
-
-                    showToast(dept === 'host_application' ? "Application Submitted! Check your email." : "Ticket Submitted! We will contact you.", "success");
-                    form.reset();
-
-                } catch (err) {
-                    console.error("EmailJS Error:", err);
-                    showToast("Failed to send. Please try again.", "error");
-                } finally {
-                    btn.innerHTML = orgText;
-                    btn.disabled = false;
-                }
-            });
-        });
-    </script>
-
-    <script type="module" src="js/index.js"></script>
 </body>
 
 </html>

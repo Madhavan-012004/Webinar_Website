@@ -28,6 +28,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     initTheaterMode();
     initReactions();
 
+    // 1. Wait for Auth to Initialize
+    await new Promise(resolve => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            unsubscribe(); // Run once for init
+            if (user) {
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                userData = userSnap.exists() ? userSnap.data() : { name: "Student", role: "student", uid: user.uid };
+                // Keep uid for comparison
+                userData.uid = user.uid;
+                startAttendanceTracking(user.uid, currentWebinarId);
+            } else {
+                document.getElementById('chat-input').placeholder = "Login to chat...";
+                document.getElementById('chat-input').disabled = true;
+                userData = null;
+            }
+            resolve();
+        });
+    });
+
+    // 2. Fetch Webinar Data
     try {
         const docRef = doc(db, "webinars", currentWebinarId);
         const docSnap = await getDoc(docRef);
@@ -36,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = docSnap.data();
             renderWatchPage(data);
             initChat(currentWebinarId);
-            initLiveCount(); // Fake live count for demo
+            initLiveCount();
         } else {
             renderError("Webinar Not Found", "This session may have been removed.");
         }
@@ -44,23 +64,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error(e);
         showToast("Error loading video", "error");
     }
-
-    // Auth & Attendance
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-            if (userSnap.exists()) {
-                userData = userSnap.data();
-            } else {
-                userData = { name: "Student", role: "student" };
-            }
-
-            startAttendanceTracking(user.uid, currentWebinarId);
-        } else {
-            document.getElementById('chat-input').placeholder = "Login to chat...";
-            document.getElementById('chat-input').disabled = true;
-        }
-    });
 });
 
 // --- UI FEATURES ---
@@ -290,6 +293,9 @@ function renderError(title, subtitle) {
         </div>`;
 }
 
+// Jitsi Player Instance
+let jitsiApi = null;
+
 function renderWatchPage(data) {
     document.getElementById('v-title').innerText = data.title;
     document.getElementById('v-date').innerHTML = `<i class="far fa-calendar"></i> ${formatDate(data.date)}`;
@@ -297,8 +303,55 @@ function renderWatchPage(data) {
     document.getElementById('v-host-name').innerText = data.hostName || 'NexStream Host';
     document.getElementById('v-host-avatar').innerText = (data.hostName || 'H').charAt(0).toUpperCase();
 
-    const videoId = extractYouTubeID(data.youtubeUrl);
     const embedContainer = document.getElementById('video-embed');
+    embedContainer.innerHTML = ''; // Clear
+
+    // 1. NATIVE LIVE STREAM (Jitsi)
+    if (data.type === 'native' && data.meetingId) {
+
+        embedContainer.style.background = '#000';
+
+        const isHost = userData && userData.uid === data.hostId;
+        const domain = 'meet.jit.si';
+        const options = {
+            roomName: data.meetingId,
+            width: '100%',
+            height: '100%',
+            parentNode: embedContainer,
+            userInfo: {
+                displayName: userData ? userData.name : 'Guest Student'
+            },
+            configOverwrite: {
+                startWithAudioMuted: !isHost,
+                startWithVideoMuted: !isHost,
+                prejoinPageEnabled: false,
+                disableDeepLinking: true,
+                toolbarButtons: isHost
+                    ? ['microphone', 'camera', 'desktop', 'fullscreen', 'fodeviceselection', 'hangup', 'profile', 'chat', 'settings', 'raisehand', 'videoquality', 'filmstrip', 'tileview']
+                    : ['chat', 'raisehand', 'fullscreen', 'tileview'] // Restricted Viewer Toolbar
+            },
+            interfaceConfigOverwrite: {
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUESTS: false,
+                DEFAULT_REMOTE_DISPLAY_NAME: 'Student',
+                TOOLBAR_ALWAYS_VISIBLE: true
+            }
+        };
+
+        // Init Jitsi
+        jitsiApi = new JitsiMeetExternalAPI(domain, options);
+
+        // Host Auto-Join
+        if (isHost) {
+            jitsiApi.executeCommand('displayName', data.hostName);
+            jitsiApi.executeCommand('subject', data.title);
+        }
+
+        return;
+    }
+
+    // 2. YOUTUBE LIVE STREAM
+    const videoId = extractYouTubeID(data.youtubeUrl);
 
     if (videoId) {
         embedContainer.innerHTML = `
@@ -316,6 +369,7 @@ function renderWatchPage(data) {
                 <div style="text-align:center;">
                     <i class="fas fa-video-slash" style="font-size:3rem; margin-bottom:15px; opacity:0.5;"></i>
                     <h3>Stream Not Available</h3>
+                    <p style="color:var(--text-muted);">Waiting for host to start...</p>
                 </div>
             </div>
         `;

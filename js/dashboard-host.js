@@ -2,7 +2,7 @@
 // Host Dashboard Logic
 // =========================================
 import { db, auth } from './config.js';
-import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { showToast, formatDate, initMobileMenu } from './utils.js';
 import { checkAuthRequirement } from './auth-guard.js';
 
@@ -28,32 +28,89 @@ async function loadHostDashboard() {
     const grid = document.getElementById('host-webinars-grid');
     if (!grid || !currentUser) return;
 
+    // Filter Config
+    let currentFilter = 'all';
+    let webinarsData = [];
+
+    // Filter Buttons
+    const btnAll = document.getElementById('filter-all');
+    const btnApproved = document.getElementById('filter-approved');
+    const btnPending = document.getElementById('filter-pending');
+
+    function setActiveFilter(filter) {
+        currentFilter = filter;
+        // Update Buttons UI
+        [btnAll, btnApproved, btnPending].forEach(btn => {
+            if (btn) {
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-text');
+            }
+        });
+
+        const activeBtn = filter === 'all' ? btnAll : (filter === 'approved' ? btnApproved : btnPending);
+        if (activeBtn) {
+            activeBtn.classList.remove('btn-text');
+            activeBtn.classList.add('btn-outline');
+        }
+        renderWebinars();
+    }
+
+    if (btnAll) btnAll.onclick = () => setActiveFilter('all');
+    if (btnApproved) btnApproved.onclick = () => setActiveFilter('approved');
+    if (btnPending) btnPending.onclick = () => setActiveFilter('pending');
+
     // REAL-TIME
     const q = query(collection(db, "webinars"), where("hostId", "==", currentUser.uid));
 
-    // Returns unsubscriber
     onSnapshot(q, (snapshot) => {
-
+        webinarsData = [];
         let sessionCount = snapshot.size;
 
         if (snapshot.empty) {
-            grid.innerHTML = `
-                <div style="grid-column:1/-1; text-align:center; padding:50px; color:#94a3b8; background:rgba(30,41,59,0.3); border-radius:12px; border:1px dashed var(--border);">
-                    <i class="fas fa-plus-circle" style="font-size:2rem; margin-bottom:15px; opacity:0.5;"></i>
-                    <p>No sessions yet. Request your first one!</p>
-                </div>
-            `;
-            // Update Stat (Sessions Hosted)
-            const statCards = document.querySelectorAll('.stat-card h3');
-            if (statCards.length > 1) statCards[1].innerText = 0;
+            renderEmptyState();
+            updateStats(0);
             return;
         }
 
-        grid.innerHTML = ''; // Clear
-
         snapshot.forEach(docSnap => {
-            const d = docSnap.data();
+            webinarsData.push({ id: docSnap.id, ...docSnap.data() });
+        });
 
+        renderWebinars();
+        updateStats(sessionCount);
+
+    }, (error) => {
+        console.error("Snapshot Error:", error);
+        grid.innerHTML = `<div style="text-align:center; padding:30px; color:#ef4444;">Error loading sessions</div>`;
+    });
+
+    function renderEmptyState() {
+        grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:50px; color:#94a3b8; background:rgba(30,41,59,0.3); border-radius:12px; border:1px dashed var(--border);">
+                <i class="fas fa-plus-circle" style="font-size:2rem; margin-bottom:15px; opacity:0.5;"></i>
+                <p>No sessions yet. Request your first one!</p>
+            </div>
+        `;
+    }
+
+    function updateStats(count) {
+        const statCards = document.querySelectorAll('.stat-card h3');
+        if (statCards.length > 1) statCards[1].innerText = count;
+    }
+
+    function renderWebinars() {
+        let htmlBuffer = '';
+        const filtered = webinarsData.filter(d => {
+            if (currentFilter === 'all') return true;
+            return d.status === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">No ${currentFilter} sessions found.</div>`;
+            return;
+        }
+
+        filtered.forEach(d => {
             let badgeClass = 'status-pending';
             let badgeText = 'Pending';
             let icon = 'fa-clock';
@@ -68,8 +125,13 @@ async function loadHostDashboard() {
                 badgeText = 'Rejected';
                 icon = 'fa-times-circle';
             }
+            if (d.status === 'live') {
+                badgeClass = 'status-live';
+                badgeText = 'Live Now';
+                icon = 'fa-broadcast-tower';
+            }
 
-            // YT Preview
+            // YT Preview or Placeholder
             let mediaPreview = '';
             if (d.youtubeUrl && d.youtubeUrl.includes('v=')) {
                 const vidId = d.youtubeUrl.split('v=')[1].split('&')[0];
@@ -82,9 +144,28 @@ async function loadHostDashboard() {
                 </div>`;
             }
 
+            let actionButton = '';
+
+            // ALWAYS SHOW BUTTON (Fix for User Request)
+            // Allows converting ANY session (YouTube/Native) to Native Live
+            if (['approved', 'pending', 'live'].includes(d.status)) {
+                actionButton = `
+                    <button onclick="startNativeSession('${d.id}', '${d.title}')" 
+                            style="width:100%; padding:10px; margin-top:15px; background:linear-gradient(135deg, #ef4444, #f43f5e); border:none; border-radius:8px; color:white; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 15px rgba(239, 68, 68, 0.4);">
+                        <i class="fas fa-broadcast-tower"></i> ${d.status === 'live' ? 'Resume Stream' : 'Start Live Session'}
+                    </button>
+                 `;
+            } else if (!d.youtubeUrl && d.type !== 'native') {
+                actionButton = `
+                     <div style="margin-top:15px; padding:10px; text-align:center; background:rgba(255,255,255,0.05); border-radius:8px; color:var(--text-muted); font-size:0.9rem;">
+                        Waiting for Link...
+                     </div>
+                `;
+            }
+
             const card = `
-                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; transition:0.3s;">
-                    <button onclick="deleteWebinar('${docSnap.id}')" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;" title="Delete">
+                <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; transition:0.3s; animation: fadeIn 0.5s;">
+                    <button onclick="deleteWebinar('${d.id}')" style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem;" title="Delete">
                         <i class="fas fa-trash"></i>
                     </button>
                     
@@ -99,19 +180,37 @@ async function loadHostDashboard() {
                             <span style="color:var(--accent); font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; font-weight:bold;">${d.category || 'General'}</span>
                             <span><i class="far fa-calendar"></i> ${d.date} at ${d.time}</span>
                             <span><i class="fas fa-tag"></i> ${d.price > 0 ? '$' + d.price : 'Free'}</span>
-                            ${d.youtubeUrl ? `<span style="color:#ef4444;"><i class="fab fa-youtube"></i> Linked</span>` : ''}
+                            ${d.type === 'native' || d.status === 'live' ? `<span style="color:#ef4444; font-weight:bold;"><i class="fas fa-bolt"></i> Native Live</span>` : ''}
+                            ${d.youtubeUrl && d.type !== 'native' ? `<span style="color:#ef4444;"><i class="fab fa-youtube"></i> Linked</span>` : ''}
                         </div>
+                        ${actionButton}
                     </div>
                 </div>
             `;
-            grid.innerHTML += card;
+            htmlBuffer += card;
         });
 
-        // Update Stat count (2nd card in stats-grid usually)
-        const statCards = document.querySelectorAll('.stat-card h3');
-        if (statCards.length > 1) statCards[1].innerText = sessionCount;
-    });
+        grid.innerHTML = htmlBuffer;
+    }
 }
+
+// Global Start Function
+window.startNativeSession = async (id, title) => {
+    try {
+        const meetingId = `MAD-${id}-${Date.now()}`; // Unique Jitsi Room
+        await updateDoc(doc(db, "webinars", id), {
+            status: 'live',
+            meetingId: meetingId,
+            isLive: true,
+            type: 'native' // FORCE native type
+        });
+        // Redirect to Watch Page as Host
+        window.location.href = `watch.html?id=${id}`;
+    } catch (e) {
+        console.error(e);
+        showToast("Error starting session", "error");
+    }
+};
 
 async function handleHostRequest(e) {
     e.preventDefault();
@@ -122,7 +221,9 @@ async function handleHostRequest(e) {
     const date = document.getElementById('w-date').value;
     const time = document.getElementById('w-time').value;
     const price = document.getElementById('w-price').value;
+    const mode = document.getElementById('w-mode').value;
     const youtubeUrl = document.getElementById('w-youtube')?.value || "";
+    const syllabus = document.getElementById('w-syllabus')?.value || "No syllabus provided.";
 
     try {
         // --- VALIDATION: Prevent Past Dates ---
@@ -136,7 +237,9 @@ async function handleHostRequest(e) {
 
         await addDoc(collection(db, "webinars"), {
             title, category, date, time, price,
-            youtubeUrl, // New Field
+            type: mode,
+            youtubeUrl: mode === 'youtube' ? youtubeUrl : '',
+            syllabus: syllabus, // Saving Syllabus
             hostId: currentUser.uid,
             hostName: currentUser.displayName || "Host",
             status: "pending",
@@ -146,8 +249,7 @@ async function handleHostRequest(e) {
         showToast("Request Submitted to Admin!", "success");
         document.getElementById('create-modal').style.display = 'none';
         document.getElementById('schedule-form').reset();
-        loadHostDashboard();
-
+        // Filtering will auto-update via snapshot
     } catch (err) {
         console.error(err);
         showToast("Error submitting request", "error");
@@ -166,7 +268,6 @@ async function deleteWebinar(id) {
     try {
         await deleteDoc(doc(db, "webinars", id));
         showToast("Session Deleted.");
-        loadHostDashboard();
     } catch (e) {
         showToast("Error deleting", "error");
     }

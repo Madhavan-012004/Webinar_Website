@@ -130,6 +130,7 @@
                 <a href="webinars.html" class="nav-link">Explore</a>
                 <a href="compete.html" class="nav-link">Compete</a>
                 <a href="certificate.html" class="nav-link">Certificates</a>
+                <a href="about.html" class="nav-link">About</a>
 
                 <a href="admin.html" id="nav-admin" class="nav-link hidden" style="color: var(--secondary);">Admin
                     Panel</a>
@@ -141,7 +142,7 @@
         </div>
     </header>
 
-    <main class="container" style="padding-top: 50px; padding-bottom: 100px;">
+    <main class="container main-content">
 
         <div class="dash-header">
             <div>
@@ -181,9 +182,10 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                 <h3 style="border-left: 4px solid var(--accent); padding-left: 15px;">My Sessions</h3>
                 <div class="filter-group">
-                    <button class="btn btn-outline" style="padding: 6px 15px; font-size: 0.9rem;">All</button>
-                    <button class="btn btn-text" style="font-size: 0.9rem;">Approved</button>
-                    <button class="btn btn-text" style="font-size: 0.9rem;">Pending</button>
+                    <button id="filter-all" class="btn btn-outline"
+                        style="padding: 6px 15px; font-size: 0.9rem;">All</button>
+                    <button id="filter-approved" class="btn btn-text" style="font-size: 0.9rem;">Approved</button>
+                    <button id="filter-pending" class="btn btn-text" style="font-size: 0.9rem;">Pending</button>
                 </div>
             </div>
 
@@ -208,50 +210,66 @@
 
             <form id="schedule-form">
                 <div class="input-group">
-                    <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Webinar Title</label>
+                    <label>Session Title</label>
                     <input type="text" id="w-title" placeholder="e.g. Masterclass in Python" required>
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                    <div style="flex: 1;">
-                        <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Date</label>
-                        <input type="date" id="w-date" required
-                            style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px;">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" id="w-date" required>
                     </div>
-                    <div style="flex: 1;">
-                        <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Time</label>
-                        <input type="time" id="w-time" required
-                            style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px;">
+                    <div class="input-group">
+                        <label>Time</label>
+                        <input type="time" id="w-time" required>
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="w-category">
+                            <option value="Development">Development</option>
+                            <option value="Design">Design</option>
+                            <option value="Business">Business</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Price ($)</label>
+                        <input type="number" id="w-price" min="0" value="0">
+                        <small style="color:var(--text-muted); display:block; margin-top:5px;">0 for Free
+                            session</small>
+                    </div>
+                </div>
+
+                <!-- NEW: Syllabus Field -->
                 <div class="input-group">
-                    <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Webinar Category</label>
-                    <select id="w-category" required
-                        style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px; option { background: #1e293b; }">
-                        <option value="Technology">Technology</option>
-                        <option value="Design">Design</option>
-                        <option value="Business">Business</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Science">Science</option>
-                        <option value="Other">Other</option>
+                    <label>Course Syllabus / Outline</label>
+                    <textarea id="w-syllabus" rows="4" placeholder="Describe what you will cover in this session..."
+                        required
+                        style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px; resize:vertical; font-family:inherit;"></textarea>
+                    <small style="color:var(--text-muted); display:block; margin-top:5px;">Students and Admins will
+                        review this before approval/registration.</small>
+                </div>
+
+                <div class="input-group">
+                    <label>Streaming Mode</label>
+                    <select id="w-mode" onchange="toggleStreamInput()">
+                        <option value="native">Native Live Stream (In-Browser)</option>
+                        <option value="youtube">YouTube Live (External)</option>
                     </select>
                 </div>
 
-                <div class="input-group">
-                    <label style="display:block; margin-bottom:8px; color:var(--text-muted);">Ticket Price ($)</label>
-                    <input type="number" id="w-price" placeholder="0 for Free" min="0">
+                <div class="input-group" id="youtube-input-group" style="display:none;">
+                    <label>YouTube Live Link</label>
+                    <input type="url" id="w-youtube" placeholder="https://youtube.com/...">
                 </div>
 
-                <!-- NEW: YouTube Integration -->
-                <div class="input-group">
-                    <label style="display:block; margin-bottom:8px; color:var(--text-muted);">YouTube Live URL
-                        (Optional)</label>
-                    <input type="url" id="w-youtube" placeholder="https://youtube.com/live/..."
-                        style="width:100%; padding:12px; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:8px;">
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="button" class="btn btn-outline" id="closeModalBtn" style="flex:1;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex:1;">Submit Request</button>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Request</button>
             </form>
         </div>
     </div>
@@ -259,39 +277,67 @@
     <div id="toast-box"></div>
 
     <script>
+        // Modal Logic
         const modal = document.getElementById('create-modal');
-        const openBtn = document.getElementById('openRequestModalBtn');
-        const closeBtn = document.getElementById('closeRequestModalBtn');
+        const btn = document.getElementById('openRequestModalBtn');
+        const close = document.getElementById('closeModalBtn');
 
-        if (openBtn) openBtn.onclick = () => modal.style.display = 'flex';
-        if (closeBtn) closeBtn.onclick = () => modal.style.display = 'none';
+        if (btn) btn.onclick = () => modal.style.display = "flex";
+        if (close) close.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => {
+            if (event.target == modal) modal.style.display = "none";
+        }
 
-        window.onclick = (e) => {
-            if (e.target == modal) modal.style.display = 'none';
+        function toggleStreamInput() {
+            const mode = document.getElementById('w-mode').value;
+            const ytGroup = document.getElementById('youtube-input-group');
+            if (mode === 'youtube') {
+                ytGroup.style.display = 'block';
+                document.getElementById('w-youtube').setAttribute('required', 'true');
+            } else {
+                ytGroup.style.display = 'none';
+                document.getElementById('w-youtube').removeAttribute('required');
+            }
         }
     </script>
 
     <footer class="main-footer">
-        <div class="container footer-layout">
-            <div class="footer-brand">
-                <h3>NexStream</h3>
-                <p>Empowering the world to teach and learn online.</p>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand-logo"><i class="fas fa-bolt"></i> MAD<span>Academy</span></a>
+                    <p>MAD Academy combines the power of learning, teaching, and practical application through
+                        real courses, interactive live classes, and competitive challenges — all in one place.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-col">
+                        <h4>Platform</h4>
+                        <ul>
+                            <li><a href="webinars.html">Browse Catalog</a></li>
+                            <li><a href="host.html" class="active">Host Studio</a></li>
+                            <li><a href="certificate.html">Verify Certificate</a></li>
+                            <li><a href="compete.html">Competitions</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="requests.html">Help Center</a></li>
+                            <li><a href="login.html">Login / Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Platform</h4>
-                <a href="webinars.html">Browse</a>
-                <a href="host.html">Host Studio</a>
-                <a href="certificate.html">Verify Certificate</a>
+            <div class="footer-bottom">
+                <p>&copy; 2026 MAD Academy. All rights reserved. Crafted for excellence.</p>
             </div>
-            <div class="footer-col">
-                <h4>Support</h4>
-                <a href="about.html">About Us</a>
-                <a href="requests.html">Help Center</a>
-                <a href="login.html">Login / Sign Up</a>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2026 NexStream Inc. All rights reserved.</p>
         </div>
     </footer>
 

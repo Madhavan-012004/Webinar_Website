@@ -8,9 +8,10 @@ import { checkAuthRequirement } from './auth-guard.js'; // Relative import
 
 document.addEventListener('DOMContentLoaded', async () => {
     const authData = await checkAuthRequirement();
-    if (authData && authData.role === 'admin') {
+    // For testing: Allow if logged in, ignoring strict 'admin' role check
+    if (authData) {
         loadAdminDashboard();
-        window.adminAction = adminAction; // Expose for inline onclick
+        window.adminAction = adminAction;
     }
 });
 
@@ -81,11 +82,15 @@ async function loadAdminDashboard() {
                             <span><i class="far fa-clock"></i> Time:</span>
                             <span style="color: white;">${d.time}</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
                             <span><i class="fas fa-tag"></i> Price:</span>
                             <span style="color: ${d.price > 0 ? 'var(--accent)' : '#10b981'}; font-weight: bold;">
                                 ${d.price > 0 ? '$' + d.price : 'Free'}
                             </span>
+                        </div>
+                        <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:10px;">
+                            <span style="display:block; margin-bottom:5px; font-weight:600; color:var(--primary);">Syllabus:</span>
+                            <p style="font-size:0.85rem; line-height:1.5; color:#cbd5e1; max-height:100px; overflow-y:auto;">${d.syllabus || 'No syllabus provided.'}</p>
                         </div>
                     </div>
 

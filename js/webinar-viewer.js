@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn) {
                 const id = btn.dataset.id;
                 const title = btn.dataset.title;
+                const syllabus = btn.dataset.syllabus;
                 if (window.openRegModal) {
-                    window.openRegModal(id, title);
+                    window.openRegModal(id, title, syllabus);
                 }
             }
         });
@@ -95,10 +96,15 @@ function initRealtimeWebinars() {
     if (!grid) return;
 
     // REAL-TIME LISTENER (onSnapshot)
-    const q = query(collection(db, "webinars"), where("status", "==", "approved"));
+    // Fetch all and filter client side to avoid Missing Index issues for "in" queries
+    const q = query(collection(db, "webinars"));
 
     onSnapshot(q, (snapshot) => {
-        currentWebinarDocs = snapshot.docs;
+        // Filter for Approved OR Live
+        currentWebinarDocs = snapshot.docs.filter(doc => {
+            const s = doc.data().status;
+            return s === 'approved' || s === 'live';
+        });
         renderWebinars();
     });
 }
@@ -140,10 +146,10 @@ function renderWebinars() {
             const videoId = extractYouTubeID(d.youtubeUrl);
             if (videoId) {
                 mediaContent = `
-                   <div class="video-container" style="position:relative; height:160px; overflow:hidden; border-radius:12px 12px 0 0;">
-                       <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" style="width:100%; height:100%; object-fit:cover;">
-                       <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.6); padding:10px; border-radius:50%;">
-                            <i class="fas fa-play" style="color:white;"></i>
+                   <div class="w-thumb video-mode">
+                       <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg">
+                       <div class="play-overlay">
+                            <i class="fas fa-play"></i>
                        </div>
                    </div>`;
             } else {
@@ -154,11 +160,14 @@ function renderWebinars() {
         }
 
         const buttonHtml = isRegistered
-            ? `<a href="watch.html?id=${docSnap.id}" class="btn btn-primary" style="padding:6px 15px; font-size:0.8rem; background: #ef4444; border-color: #ef4444; text-decoration:none;">
-                 <i class="fas fa-play"></i> Watch Session
+            ? `<a href="watch.html?id=${docSnap.id}" class="btn btn-primary btn-sm btn-watch">
+                 <i class="fas fa-play"></i> Watch
                </a>`
-            : `<button class="btn btn-outline btn-register" style="padding:6px 15px; font-size:0.8rem;" 
-                 data-id="${docSnap.id}" data-title="${d.title.replace(/"/g, '&quot;')}">
+            : `<button class="btn btn-outline btn-sm btn-register" 
+                 data-id="${docSnap.id}" 
+                 data-title="${d.title.replace(/"/g, '&quot;')}"
+                 data-syllabus="${(d.syllabus || '').replace(/"/g, '&quot;')}"
+               >
                  Register
                </button>`;
 
@@ -166,17 +175,17 @@ function renderWebinars() {
             <div class="w-card">
                 ${mediaContent}
                 <div class="w-content">
-                    <div style="display:flex; justify-content:space-between; color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">
+                    <div class="w-meta">
                         <span><i class="far fa-calendar"></i> ${d.date}</span>
                         <span><i class="far fa-clock"></i> ${d.time}</span>
                     </div>
                     <h3 class="w-title">${d.title}</h3>
-                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
-                         <div style="width:30px; height:30px; background:#4f46e5; border-radius:50%; display:flex; justify-content:center; align-items:center; color:white; font-size:12px;">${(d.hostName || 'H').charAt(0)}</div>
-                         <span style="color:#94a3b8; font-size:0.9rem;">${d.hostName || 'Host'}</span>
+                    <div class="w-host">
+                         <div class="host-avatar">${(d.hostName || 'H').charAt(0)}</div>
+                         <span>${d.hostName || 'Host'}</span>
                     </div>
                     <div class="w-footer">
-                        <span style="font-weight:bold; color:${d.price == 0 ? '#10b981' : '#06b6d4'};">
+                        <span class="w-price ${d.price == 0 ? 'free' : 'paid'}">
                             ${d.price > 0 ? '$' + d.price : 'Free'}
                         </span>
                         ${buttonHtml}
@@ -195,7 +204,7 @@ function setupRegModal() {
     const closeBtn = document.getElementById('closeRegModal');
     const form = document.getElementById('regForm');
 
-    window.openRegModal = (id, title) => {
+    window.openRegModal = (id, title, syllabus) => {
         if (!currentUser) {
             if (typeof showToast === 'function') {
                 showToast("Please Login to Register", "warning");
@@ -209,10 +218,12 @@ function setupRegModal() {
         const m_id = document.getElementById('reg-wid');
         const m_title = document.getElementById('reg-wtitle');
         const m_header = document.getElementById('reg-webinar-title');
+        const m_syllabus = document.getElementById('reg-syllabus-content');
 
         if (m_id) m_id.value = id;
         if (m_title) m_title.value = title;
         if (m_header) m_header.innerText = title;
+        if (m_syllabus) m_syllabus.innerText = syllabus || "No syllabus provided by the host.";
 
         // Auto-fill if possible
         const m_name = document.getElementById('reg-name');
